@@ -3,8 +3,14 @@ fetch("/api/worker")
     return response.json()
   })
   .then(function(worker){
-    console.log('test data',worker)
+    console.log('test data',worker[0].name)
   })
+
+  fetch("/api/equipment_type")
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+    }).catch(err => console.error(err));
 
 var app = new Vue({
   el: "#container",
