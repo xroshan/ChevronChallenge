@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -10,7 +11,8 @@
 
 <body>
     <div id="container" class="grid-container">
-        <div id="title"><img src="../static/assets/chevron_logo.png" height="70px" width="70px" style="margin-right:25px">Chevron Challenge</div>
+        <div id="title"><img src="../static/assets/chevron_logo.png" height="70px" width="70px" style="margin-right:25px">Chevron
+            Challenge</div>
         <div v-if="user=='home'" class="homepage">
             <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
@@ -26,8 +28,6 @@
             <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
             <div class="adminArea">
                 <span class="formTitle">Add a New Facility</span><br>
-                <span class="formHeading">Facility Name:</span>
-                <input type="text" style="width:208px" v-model="aFacilityName" placeholder="Enter here"><br>
                 <span class="formHeading">Facility Location: </span>
                 <input type="text" v-model="aLongitude" placeholder="longitude">,
                 <input type="text" v-model="aLatitude" placeholder="latitude"><br><br>
@@ -35,7 +35,7 @@
                 <span class="formTitle">Add a New Equipment</span><br>
                 <div class="formHeading">Equipment Type:
                     <select class="dropDown" v-model="aSelectedEquipment">
-                        <option v-for="equipment in equipments" :value="equipment.key">{{equipment.name}}</option>
+                        <option v-for="type in types" v-blind:value="type.key">{{type.name}}</option>
                     </select>
                 </div>
 
@@ -56,7 +56,11 @@
 
                 <span class="formTitle">Add a New Worker</span><br>
                 <span class="formHeading">Worker's Name:</span>
-                <input type="text" style="width:200px" v-model="aWorkerName" placeholder="FullName"><br>
+                <input type="text" style="width:200px" v-model="aWorkerName" placeholder="FullName"><span style="color:black"></span><br>
+               
+                <span class="formHeading">Worker's Shift:</span>
+                <input type="text" style="width:200px" v-model="aWorkerShift" placeholder="Shift">
+               
                 <div class="formHeading" style="margin-top:5px">Certification:
                     <input type="checkbox" id="sensor" value="sensor" v-model="checkedItems">
                     <label for="sensor">Sensor</label>
@@ -80,11 +84,9 @@
                     <label for="electricity">Electricity</label>
                     <br>
                 </div>
-                <span class="formHeading">Worker's Shift:</span>
-                <input type="text" style="width:200px" v-model="aWorkerShift" placeholder="shift">
                 <br><br>
 
-                <v-btn id="aSubmitButton" v-on:click="user='submit'">Submit<v-icon dark right>check_circle</v-icon>
+                <v-btn id="submitNewWorker" v-on:click="addNewWorker">Submit<v-icon dark right>check_circle</v-icon>
                 </v-btn>
             </div>
         </div>
@@ -140,7 +142,7 @@
                 <span id="submitSuccess">Submission Success!</span>
             </div>
         </div>
-        
+
     </div>
 </body>
 <script src="../static/index.js"></script>
