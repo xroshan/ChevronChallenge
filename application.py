@@ -33,6 +33,25 @@ def worker_root():
 
         return jsonify(get_dict_array(workers))
 
+@app.route("/api/equipment_type", methods=["GET", "POST"])
+def equipment_type_root():
+
+    if request.method == "POST":
+        # expected data [name]
+        data = request.get_json()
+
+        e_type = EquipmentType(data['name'])
+        db.session.add(e_type)
+        db.session.commit()
+
+        return jsonify(get_dict(e_type))
+    
+    else:
+        # get equipments
+        equipment_types = EquipmentType.query.all()
+
+        return jsonify(get_dict_array(equipment_types))
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
