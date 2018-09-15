@@ -2,8 +2,8 @@ fetch("/api/worker")
   .then(function (response){
     return response.json()
   })
-  .then(function(data){
-    console.log('test data',data)
+  .then(function(worker){
+    console.log('test data',worker)
   })
 
 var app = new Vue({

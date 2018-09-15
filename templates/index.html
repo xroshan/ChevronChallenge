@@ -10,12 +10,12 @@
 
 <body>
     <div id="container" class="grid-container">
-        <div id="title">Chevron Challenge</div>
+        <div id="title"><img src="../images/chevron_logo.png" height="70px" width="70px" style="margin-right:25px">Chevron Challenge</div>
         <div v-if="user=='home'" class="homepage">
             <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
-            <div class="homeArea"><br>
+            <div class="homeArea">
                 <span class="formTitle"><u>About Us</u></span>
             </div>
         </div>
@@ -24,7 +24,7 @@
             <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
-            <div class="adminArea"><br>
+            <div class="adminArea">
                 <span class="formTitle">Add a New Facility</span><br>
                 <span class="formHeading">Facility Name:</span>
                 <input type="text" style="width:208px" v-model="aFacilityName" placeholder="Enter here"><br>
@@ -79,7 +79,10 @@
                     <input type="checkbox" id="electricity" value="electricity" v-model="checkedItems">
                     <label for="electricity">Electricity</label>
                     <br>
-                </div><br><br>
+                </div>
+                <span class="formHeading">Worker's Shift:</span>
+                <input type="text" style="width:200px" v-model="aWorkerShift" placeholder="shift">
+                <br><br>
 
                 <v-btn id="aSubmitButton" v-on:click="user='submit'">Submit<v-icon dark right>check_circle</v-icon>
                 </v-btn>
@@ -91,7 +94,7 @@
             <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
-            <div class="clientArea"><br>
+            <div class="clientArea">
                 <span class="formTitle"><u>Workorder</u></span><br><br>
                 <span class="formHeading">Facility: </span>
                 <select class="dropDown" v-model="cFacilityId">
