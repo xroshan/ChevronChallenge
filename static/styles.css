@@ -11,10 +11,10 @@
   font-size: 50px;
   color: steelblue;
   border-style: solid;
-  border-width: 5px;
+  border-width: 2px;
   border-radius: 10px;
   border-color: black;
-  background-color: powderblue;
+  background-color: white;
   padding: 20px;
   margin: 10px;
 }
@@ -26,10 +26,10 @@
   font-size: 30px;
   color: steelblue;
   border-style: solid;
-  border-width: 5px;
+  border-width: 3px;
   border-radius: 10px;
   border-color: black;
-  background-color: powderblue;
+  background-color: white;
   margin-left: 10px;
 }
 
@@ -40,10 +40,10 @@
   font-size: 30px;
   color: steelblue;
   border-style: solid;
-  border-width: 5px;
+  border-width: 3px;
   border-radius: 10px;
   border-color: black;
-  background-color: powderblue;
+  background-color: white;
   margin-left: 10px;
 }
 
@@ -54,10 +54,10 @@
   font-size: 30px;
   color: steelblue;
   border-style: solid;
-  border-width: 5px;
+  border-width: 3px;
   border-radius: 10px;
   border-color: black;
-  background-color: powderblue;
+  background-color: white;
   margin-left: 10px;
 }
 
@@ -100,6 +100,19 @@
   padding: 10px;
 }
 
+.afterSubmit {
+  height: 75%;
+  width: 98.5%;
+  background-color: blanchedalmond;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 10px;
+  border-color: black;
+  margin-top: 5px;
+  margin-left: 10px;
+  padding: 10px;
+}
+
 .formTitle {
   font-family: Lucida Sans Typewriter;
   font-size: 30px;
@@ -120,7 +133,7 @@
   width: 180px;
   font-size: 20px;
   font-family: Lucida Sans Typewriter;
-  background-color: powderblue;
+  background-color: white;
   color: black;
   border-style: solid;
   border-width: 1px;
@@ -158,8 +171,16 @@ input[type="checkbox"] {
   border-width: 2px;
   border-radius: 10px;
   border-color: black;
-  background-color: powderblue;
+  background-color: white;
   padding-right: 5px;
   padding-left: 7px;
   margin-left: 20px;
+}
+
+#submitSuccess{
+    font-family: Lucida Sans Typewriter;
+    font-size: 50px;
+    font-weight: bold;
+    color: steelblue;
+    margin-left: 400px;
 }

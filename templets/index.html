@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -134,7 +133,11 @@
             <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
+            <div class="afterSubmit">
+                <span id="submitSuccess">Submission Success!</span>
+            </div>
         </div>
+        
     </div>
 </body>
 <script src="../static/index.js"></script>
