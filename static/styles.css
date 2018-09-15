@@ -1,62 +1,67 @@
 #container {
   width: 100%;
-  height: 100%;
-  background-color: white;
+  height: 95%;
+  background-color: rgb(24, 102, 153);
+  background-image: linear-gradient(to bottom right, rgb(24, 102, 153), rgb(9, 39, 59));
 }
 
 #title {
   grid-area: header;
   text-align: center;
   font-family: Lucida Sans Typewriter;
-  font-size: 50px;
-  color: black;
+  font-size: 100px;
+  font-weight: bolder;
+  color: rgb(60, 128, 184);
   border-style: solid;
-  border-width: 2px;
-  border-radius: 10px;
-  border-color: black;
-  background-color:white;
-  padding: 20px;
-  margin: 10px;
+  border-width: 1px;
+  border-color: white;
+  background-color:rgb(179, 216, 241);
+  background-image: linear-gradient(rgb(179, 216, 241),white);
+  padding: 10px;
+  margin-bottom: 15px;
 }
 
 #homeButton {
   height: 50px;
-  width: 200px;
+  width: 170px;
   font-family: Lucida Sans Typewriter;
-  font-size: 30px;
+  font-size: 22px;
+  font-weight: 800;
   color: black;
   border-style: solid;
   border-width: 3px;
-  border-radius: 10px;
-  border-color: black;
-  background-color:white;
+  border-radius: 5px;
+  border-color: rgb(20, 52, 88);
+  background-color:rgb(255, 255, 255);
   margin-left: 10px;
 }
 
 #adminButton {
   height: 50px;
-  width: 200px;
+  width: 170px;
   font-family: Lucida Sans Typewriter;
-  font-size: 30px;
+  font-size: 22px;
+  font-weight: 800;
   color: black;
   border-style: solid;
   border-width: 3px;
-  border-radius: 10px;
-  border-color: black;
+  border-radius: 5px;
+  border-color: rgb(20, 52, 88);
   background-color:white;
   margin-left: 10px;
 }
 
 #clientButton {
   height: 50px;
-  width: 200px;
+  width: 170px;
   font-family: Lucida Sans Typewriter;
-  font-size: 30px;
+  font-size: 22px;
+  font-weight: 800;
   color: black;
   border-style: solid;
   border-width: 3px;
-  border-radius: 10px;
-  border-color: black;
+  border-radius: 5px;
+  border-color: rgb(20, 52, 88);
   background-color:white;
   margin-left: 10px;
 }
@@ -67,9 +72,9 @@
   background-color: white;
   border-style: solid;
   border-width: 2px;
-  border-radius: 10px;
-  border-color: black;
-  margin-top: 5px;
+  border-radius: 5px;
+  border-color: rgb(20, 52, 88);
+  margin-top: 1px;
   margin-left: 10px;
   padding: 10px;
 }
@@ -80,9 +85,9 @@
   background-color: white;
   border-style: solid;
   border-width: 2px;
-  border-radius: 10px;
-  border-color: black;
-  margin-top: 5px;
+  border-radius: 5px;
+  border-color: rgb(20, 52, 88);
+  margin-top: 1px;
   margin-left: 10px;
   padding: 10px;
 }
@@ -93,9 +98,9 @@
   background-color: white;
   border-style: solid;
   border-width: 2px;
-  border-radius: 10px;
-  border-color: black;
-  margin-top: 5px;
+  border-radius: 5px;
+  border-color: rgb(20, 52, 88);
+  margin-top: 1px;
   margin-left: 10px;
   padding: 10px;
 }
@@ -115,7 +120,7 @@
 
 .formTitle {
   font-family: Lucida Sans Typewriter;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: bold;
   text-decoration-line: underline;
   color: black;
@@ -123,7 +128,7 @@
 
 .formHeading {
   font-family: Lucida Sans Typewriter;
-  font-size: 25px;
+  font-size: 15px;
   color: black;
   margin-top: 2px;
   padding-left: 20px;
