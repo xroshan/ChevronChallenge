@@ -33,6 +33,44 @@ def worker_root():
 
         return jsonify(get_dict_array(workers))
 
+@app.route("/api/facility", methods=["GET", "POST"])
+def facility_root():
+
+    if request.method == "POST":
+        # expected data [lat, lon]
+        data = request.get_json()
+
+        facility = Facility(data['lat'], data['lon'])
+        db.session.add(facility)
+        db.session.commit()
+
+        return jsonify(get_dict(facility))
+
+    else:
+        # get facilities
+        facilities = Facility.query.all()
+
+        return jsonify(get_dict_array(facilities))
+
+@app.route("/api/certification", methods=["GET", "POST"])
+def certification_root():
+
+    if request.method == "POST":
+        # expected data [equipment_type_id, worker_id]
+        data = request.get_json()
+
+        certification = Certification(data['equipment_type_id'], data['worker_id'])
+        db.session.add(certification)
+        db.session.commit()
+
+        return jsonify(get_dict(certification))
+
+    else:
+        # get facilities
+        certifications = Certification.query.all()
+
+        return jsonify(get_dict_array(certifications))
+
 @app.route("/api/equipment_type", methods=["GET", "POST"])
 def equipment_type_root():
 
