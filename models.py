@@ -37,6 +37,7 @@ class Equipment(db.Model):
 
 class Certification(db.Model):
     __tablename__ = "certification"
+    id = db.Column(db.Integer, primary_key=True)
     equipment_type = db.Column(db.String(25), nullable=False)
 
     worker_id = db.Column(db.Integer, db.ForeignKey("worker.id"), nullable=False)
