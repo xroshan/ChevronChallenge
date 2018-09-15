@@ -128,6 +128,25 @@ def get_best_scenario(orders):
     result = reversed_result.reverse()
     return result
 
-## function to check if the task is completed
-## assign the work with the best solution, during assigning time until free time = time after completion
-## 
+
+#assign the task once we get the best scenario
+def assign_task():
+    orders = get_all_orders()
+    best = get_best_scenario(orders)
+    #update database
+
+   # during assigning time until free time = time after completion
+
+#check everytime if the task has been completed
+def check_completion():
+    orders = get_all_orders()
+    for order in orders:
+        #if estimated time is greater than current time, then the work is completed
+        if order.est_time > datetime.now():
+            order.status = 'completed'
+    
+
+#this function gets called when clients adds their work order request
+def main:
+    check_completion()
+    assign_task()
