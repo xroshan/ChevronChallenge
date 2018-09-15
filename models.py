@@ -84,6 +84,8 @@ class Order(db.Model):
     time_to_completion = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime,  default=db.func.current_timestamp(), nullable=False)
     status = db.Column(db.String(15), default="pending", nullable=False)
+    est_end_time = db.Column(db.DateTime)
+    est_start_time = db.Column(db.DateTime)
 
     facility_id = db.Column(db.Integer, db.ForeignKey("facility.id"), nullable=False)
     equipment_id = db.Column(db.Integer, db.ForeignKey("equipment.id"), nullable=False)
@@ -105,7 +107,6 @@ class Worker(db.Model):
     name = db.Column(db.String(100), nullable=False)
     shift = db.Column(db.String(15), nullable=False)
     time_until_free = db.Column(db.DateTime)
-    testing_time = db.Column(db.DateTime)
 
     certifications = db.relationship("Certification", backref="worker", lazy=True)
     orders = db.relationship("Order", backref="worker", lazy=True)
