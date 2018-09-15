@@ -14,7 +14,7 @@
   border-width: 2px;
   border-radius: 10px;
   border-color: black;
-  background-color: white;
+  background-color:powderblue;
   padding: 20px;
   margin: 10px;
 }
@@ -29,7 +29,7 @@
   border-width: 3px;
   border-radius: 10px;
   border-color: black;
-  background-color: white;
+  background-color:powderblue;
   margin-left: 10px;
 }
 
@@ -43,7 +43,7 @@
   border-width: 3px;
   border-radius: 10px;
   border-color: black;
-  background-color: white;
+  background-color:powderblue;
   margin-left: 10px;
 }
 
@@ -57,7 +57,7 @@
   border-width: 3px;
   border-radius: 10px;
   border-color: black;
-  background-color: white;
+  background-color:powderblue;
   margin-left: 10px;
 }
 
@@ -133,7 +133,7 @@
   width: 180px;
   font-size: 20px;
   font-family: Lucida Sans Typewriter;
-  background-color: white;
+  background-color:powderblue;
   color: black;
   border-style: solid;
   border-width: 1px;
@@ -171,7 +171,7 @@ input[type="checkbox"] {
   border-width: 2px;
   border-radius: 10px;
   border-color: black;
-  background-color: white;
+  background-color:powderblue;
   padding-right: 5px;
   padding-left: 7px;
   margin-left: 20px;
