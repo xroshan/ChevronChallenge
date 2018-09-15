@@ -3,6 +3,9 @@
 <head>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 
 <body>
@@ -14,20 +17,77 @@
         </div>
         <div v-else-if="user=='admin'">
             <button id="homeButton" v-on:click="user='home'">Home</button>
-            <div class='admin'>
-                <span class="formTitle">Facility</span><br>
+            <div class="adminArea">
+                <span class="formTitle">Add New Facility Details </span><br>
+                <span class="formHeading">Facility Name:</span>
+                <input type="text" style="width:208px" v-model="aFacilityName" placeholder="Enter here"><br>
                 <span class="formHeading">Facility Location: </span>
-                <input v-model="aLongitude" placeholder="longitude">
-                <input v-model="aLatitude" placeholder="latitude"><br>
-                <span class="formTitle">Equipment</span><br>
-                <span class="formHeading">Equipment Type</span>
+                <input type="text" v-model="aLongitude" placeholder="longitude">,
+                <input type="text" v-model="aLatitude" placeholder="latitude"><br><br>
+
+                <span class="formTitle">Add New Equipment Details</span><br>
+                <div class="formHeading">Equipment Type:
+                    <select class="dropDown" v-model="aSelectedEquipment">
+                        <option v-for="equipment in equipments" :value="equipment.key">{{equipment.name}}</option>
+                    </select>
+                </div>
+
+                <div class="formHeading">Facility Number to equip:
+                    <select class="dropDown" v-model="aSelectedFacility">
+                        <option v-for="facility in facilities" :value="facility.key">{{facility.name}}</option>
+                    </select>
+                </div><br>
+
+                <div class="formHeading">Probability of failure:
+                    <input type="text" style="width:190px" v-model="aProbabilityFailure" placeholder="0.00">
+                </div>
+
+                <div class="formHeading">Range of time required to fix:
+                    <input type="text" style="width:50px" v-model="aMinTime" placeholder="0"> -
+                    <input type="text" style="width:50px" v-model="aMaxTime" placeholder="0">
+                </div><br>
+
+                <span class="formTitle">Add a New Worker</span><br>
+                <span class="formHeading">Worker's Name:</span>
+                <input type="text" style="width:200px" v-model="aWorkerName" placeholder="FullName"><br>
+                <div class="formHeading" style="margin-top:5px">Certification:
+                    <input type="checkbox" id="sensor" value="sensor" v-model="checkedItems">
+                    <label for="sensor">Sensor</label>
+                    <input type="checkbox" id="security" value="security" v-model="checkedItems">
+                    <label for="security">Security</label>
+                    <input type="checkbox" id="networking" value="networking" v-model="checkedItems">
+                    <label for="networking">Networking</label>
+                    <input type="checkbox" id="pump" value="pump" v-model="checkedItems">
+                    <label for="pump">Pump</label>
+                    <input type="checkbox" id="HVAC" value="HVAC" v-model="checkedItems">
+                    <label for="HVAC">HVAC</label>
+                    <input type="checkbox" id="vehicle" value="vehicle" v-model="checkedItems">
+                    <label for="vehicle">Vehicle</label>
+                    <input type="checkbox" id="conveyor" value="conveyor" v-model="checkedItems">
+                    <label for="conveyor">Conveyor</label>
+                    <input type="checkbox" id="seperator" value="seperator" v-model="checkedItems">
+                    <label for="seperator">Seperator</label>
+                    <input type="checkbox" id="compressor" value="compressor" v-model="checkedItems">
+                    <label for="compressor">Compressor</label>
+                    <input type="checkbox" id="electricity" value="electricity" v-model="checkedItems">
+                    <label for="electricity">Electricity</label>
+                    <br>
+                </div>
+
+                <button id="aSubmit" v-on:click="user='submit'">Submit</button>
             </div>
         </div>
+
         <div v-else-if="user=='staff'">
             <button id="homeButton" v-on:click="user='home'">Home</button>
-            <div class='staff'>
-
+            <div class="staffArea">
+                staff area
             </div>
+        </div>
+
+        <div v-else-if="user=='submit'">
+            <button id="adminButton" v-on:click="user='admin'">Admin</button>
+            <button id="staffButton" v-on:click="user='staff'">Staff</button>
         </div>
     </div>
 </body>
