@@ -13,10 +13,17 @@ def get_all_orders():
     orders = priortize_orders(orders)
     return orders
 
-# get all the work orders except the "completed ones" or "in_progress" ones
-def get_all_assigned_orders():
+# get all the work orders except the "completed" ones or "in_progress" ones
+def get_all_pending_orders():
     orders = Order.query.filter(
         Order.status != "completed" or Order.status != "in_progress").all()
+    return orders
+
+
+# get all the work orders except the "completed" ones or "pending" ones
+def get_all_assigned_orders():
+    orders = Order.query.filter(
+        Order.status != "completed" or Order.status != "pending").all()
     return orders
 
 
@@ -145,20 +152,21 @@ def get_best_scenario(orders):
 
 # assign the task once we get the best scenario
 def assign_task():
-    orders = get_all_assigned_orders()
+    orders = get_all_pending_orders()
     best = get_best_scenario(orders)
     # for each order, assign worker, estimated start time and estimated end time
     for order in orders:
         order.worker_id = best[order.work_id][0]
         order.est_start_time = best[order.work_id][1]
         order.est_end_time = best[order.work_id][2]
+        order.status = 'assigned'
     # update database
     db.session.commit()
 
 
 # check everytime if the task has been completed or is going to start
 def check_time():
-    orders = get_all_orders()
+    orders = get_all_assigned_orders()
     for order in orders:
         # if estimated end time is greater than current time, then the work is completed
         if order.est_end_time > datetime.now():
