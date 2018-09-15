@@ -18,7 +18,7 @@ def index():
 def worker_root():
     
     if request.method == "POST":
-        # expected data [name, shift]
+        # expected data [name, shift, certificaions[](optional)]
         data = request.get_json()
 
         worker = Worker(data['name'], data['shift'])

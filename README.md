@@ -9,5 +9,5 @@ To run:
 2. `virtualenv venv`
 3. `source venv/bin/activate`
 4. `pip install -r requirements.txt`
-5. `source .env`
+5. `source env.sh`
 6. `python3 application.py`
