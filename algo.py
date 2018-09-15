@@ -48,7 +48,7 @@ def add_time(a, b, shift_time):
 
 
 # get the oldest datetime comparing the current old time and datetime if that worker is assigned that work order
-def get_total_time(TTC, worker_id, current_value):
+def get_total_time(TTC, worker_id, res):
     worker = Worker.query.get(worker_id)
     # get the ending shift datetime
     shift_time = worker.time_until_free.date()
@@ -57,12 +57,11 @@ def get_total_time(TTC, worker_id, current_value):
     else:
         shift_time = datetime.time(22, 0, 0)
     # add the time together to get the working time of worker during his/her shift hours
-    worker.testing_time = add_time(
-        worker.testing_time, timedelta(hours=TTC), shift_time)
-    # return the oldest datetime
-    if worker.testing_time > current_value:
-        return worker.testing_time
-    return current_value
+    testing_time = add_time(
+        res[worker.worker_id], timedelta(hours=TTC), shift_time)
+    # return the test_time till now
+    return testing_time
+
 
 
 # recover the best solution given the best leaf of a tree
@@ -78,7 +77,7 @@ def recover_best_path(best_node):
 # brute force all the scenarios with the help of tree. The path of the best value of the leaf through the tree gives the best scenario
 def get_best_scenario(orders):
     # scenario starts with current datetime
-    scenario = AnyNode(value=datetime.now())
+    scenario = AnyNode(testing_infos = [], value=datetime.now())
     depth = 0
 
     for order in orders:
@@ -90,11 +89,15 @@ def get_best_scenario(orders):
             # iterate through all the leaves and grow more based on work assigned
             for partree in partrees:
                 children = []
+                #store all worker_time completion testing as key and value 
+                res = partree.parent.testing_infos
 
                 # if "in_progress", get the latest time comparing the current latest time and time required by worker to complete
                 if order.status == "in_progress":
                     worker = Worker.query.get(order.worker_id)
-                    a = AnyNode(work_id=order.work_id, worker_id=order.worker_id, value=min(
+                    #set worker testing time to time until free as it has already been assigned "in_progress"
+                    res[worker.worker_id] = worker.time_until_free
+                    a = AnyNode(testing_infos = res,work_id=order.work_id, worker_id=order.worker_id, value=min(
                         worker.time_until_free, partree.value))
                     children.append(a)
 
@@ -102,8 +105,10 @@ def get_best_scenario(orders):
                 else:
                     workers = get_all_workers(order.equipment_id)
                     for worker in workers:
-                        a = AnyNode(work_id=order.work_id, worker_id=worker.worker_id, value=get_total_time(
-                            order.time_to_completion, worker.worker_id, partree.value))
+                        if not worker.worker_id in res:
+                            res[worker.worker_id] = worker.time_until_free
+                        res[worker.worker_id] = get_total_time(order.time_to_completion, worker.worker_id, res)
+                        a = AnyNode(testing_infos = res, work_id=order.work_id, worker_id=worker.worker_id, value=max(res[worker.worker_id], partree.value))
                         children.append(a)
 
                 # add the leaves to the current parent node
@@ -122,3 +127,7 @@ def get_best_scenario(orders):
     # reverse the list in time wise
     result = reversed_result.reverse()
     return result
+
+## function to check if the task is completed
+## assign the work with the best solution, during assigning time until free time = time after completion
+## 
