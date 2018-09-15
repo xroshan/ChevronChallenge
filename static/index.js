@@ -1,3 +1,11 @@
+fetch("/api/worker")
+  .then(function (response){
+    return response.json()
+  })
+  .then(function(data){
+    console.log('test data',data)
+  })
+
 var app = new Vue({
   el: "#container",
   data: {
