@@ -2,6 +2,7 @@ import json
 
 from flask import Flask, jsonify, request, send_file
 from models import *
+from helpers import get_dict, get_dict_array
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
@@ -18,18 +19,19 @@ def worker_root():
     
     if request.method == "POST":
         # expected data [name, shift]
-        data = json.loads(request.data)
+        data = request.get_json()
 
         worker = Worker(data['name'], data['shift'])
         db.session.add(worker)
+        db.session.commit()
         
-        return jsonify(worker)
+        return jsonify(get_dict(worker))
     
     else:
         # get request
         workers = Worker.query.all()
 
-        return jsonify(workers)
+        return jsonify(get_dict_array(workers))
 
 if __name__ == "__main__":
     with app.app_context():
