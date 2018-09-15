@@ -1,0 +1,95 @@
+.title {
+  grid-area: header;
+  text-align: center;
+  font-family: monospace;
+  font-size: 50px;
+  color: steelblue;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 10px;
+  border-color: black;
+  background-color: powderblue;
+  padding: 20;
+  margin: 10;
+}
+
+.homepage {
+}
+
+#homeButton {
+  height: 50px;
+  width: 200px;
+  font-family: monospace;
+  font-size: 30px;
+  color: steelblue;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 10px;
+  border-color: black;
+  background-color: powderblue;
+  margin-left: 10px;
+}
+
+.admin {
+  height: 75%;
+  width: 100%;
+  background-color: blanchedalmond;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 10px;
+  border-color: black;
+  margin-top: 5px;
+}
+
+#adminButton {
+  height: 100px;
+  width: 200px;
+  font-family: monospace;
+  font-size: 30px;
+  color: steelblue;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 10px;
+  border-color: black;
+  background-color: powderblue;
+  margin-top: 100px;
+  margin-left: 200px;
+}
+
+.staff {
+  height: 75%;
+  width: 100%;
+  background-color: blanchedalmond;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 10px;
+  border-color: black;
+  margin-top: 5px;
+}
+
+#staffButton {
+  height: 100px;
+  width: 200px;
+  font-family: monospace;
+  font-size: 30px;
+  color: steelblue;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 10px;
+  border-color: black;
+  background-color: powderblue;
+  margin-top: 100px;
+  margin-left: 200px;
+}
+
+.formTitle{
+    font-family: monospace;
+    font-size: 20px;
+    color: steelblue;
+}
+
+.formHeading{
+    font-family: monospace;
+    font-size: 15px;
+    color: steelblue;
+}

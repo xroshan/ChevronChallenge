@@ -6,10 +6,33 @@
 </head>
 
 <body>
-    <div id="test">
-        <span v-if="seen">Now you see me</span>
+    <div id="container" class="grid-container">
+        <div class="title">EtaNaUta</div>
+        <div v-if="user=='home'" class="homepage">
+            <button id="adminButton" v-on:click="user='admin'">Admin</button>
+            <button id="staffButton" v-on:click="user='staff'">Staff</button>
+        </div>
+        <div v-else-if="user=='admin'">
+            <button id="homeButton" v-on:click="user='home'">Home</button>
+            <div class='admin'>
+                <span class="formTitle">Facility</span><br>
+                <span class="formHeading">Facility Location: </span>
+                <input v-model="aLongitude" placeholder="longitude">
+                <input v-model="aLatitude" placeholder="latitude"><br>
+                <span class="formTitle">Equipment</span><br>
+                <span class="formHeading">Equipment Type</span>
+            </div>
+        </div>
+        <div v-else-if="user=='staff'">
+            <button id="homeButton" v-on:click="user='home'">Home</button>
+            <div class='staff'>
+
+            </div>
+        </div>
     </div>
 </body>
 <script src="../static/index.js"></script>
+<link rel="stylesheet" href="../static/styles.css">
 <!-- <script src="{{url_for('static', filename='index.js')}}"></script> -->
+
 </html>

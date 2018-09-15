@@ -1,7 +1,27 @@
+const DropDown = Vue.component("dropdown", {
+    template: "#dropdown",
+    data() {
+      return {
+        showDropDown: true,
+        links: [
+          {
+            name: "Account"
+          },
+          {
+            name: "Profile"
+          },
+          {
+            name: "Logout"
+          }
+        ]
+      };
+    }
+  });
+
 var app = new Vue({
-    el: '#test',
+    el: '#container',
     data:{
-        seen:true
+        user:'home'
     }
 })
 
