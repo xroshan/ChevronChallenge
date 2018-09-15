@@ -5,18 +5,24 @@ from datetime import datetime, timedelta
 # Assumption
 # Workers   Morning Shift -- 8:00a - 2:00p      Evening Shift -- 2:00p - 10:00p
 # Work Order has been assigned to workers on the basis of priority with minimum time of completion for all work orders till then
-#
+# Priority.. 1 -- highest priority and 5 -- lowest priority
 
 # get all the work orders except the "completed" ones
-
-
 def get_all_orders():
     orders = Order.query.filter(Order.status != "completed").all()
+    orders = priortize_orders(orders)
     return orders
 
+
+#sort the work orders based on their priority level
+def priortize_orders(orders):
+    return orders.sort(key = priortize_orders_helper)
+
+#helper to priortize_order function 
+def priortize_orders_helper(ord):
+    return ord.priority
+
 # get all the workers who can fix the "equipment_id"
-
-
 def get_all_workers(equipment_id):
     # get equipment type id
     equipment = Equipment.query.get(equipment_id)
@@ -28,9 +34,8 @@ def get_all_workers(equipment_id):
 
     return workers
 
+
 # add two times together in such a way that the time is included during the shift hours the worker
-
-
 def add_time(a, b, shift_time):
     if (a + b) <= shift_time:
         # if the sum of time is included during the shift hour return it
