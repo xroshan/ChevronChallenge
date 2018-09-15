@@ -31,8 +31,8 @@ class Equipment(db.Model):
     hour_min = db.Column(db.Integer, nullable=False)
     hour_max = db.Column(db.Integer, nullable=False)
 
-    equipment_type = db.Column(db.Integer, db.ForeignKey("equipment_type.id"), nullable=False)
-    facility = db.Column(db.Integer, db.ForeignKey("facility.id"), nullable=False)
+    equipment_type_id = db.Column(db.Integer, db.ForeignKey("equipment_type.id"), nullable=False)
+    facility_id = db.Column(db.Integer, db.ForeignKey("facility.id"), nullable=False)
     orders = db.relationship("Order", backref="equipment", lazy=True)
 
 class EquipmentType(db.Model):
@@ -40,11 +40,14 @@ class EquipmentType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25), nullable=False)
 
+    equipments = db.relationship("Equipment", backref="equipment_type", lazy=True)
+    certifications = db.relationship("Certification", backref="equipment_type", lazy=True)
+
 class Certification(db.Model):
     __tablename__ = "certification"
     id = db.Column(db.Integer, primary_key=True)
-    
-    equipment_type = db.Column(db.Integer, db.ForeignKey("equipment_type.id"), nullable=False)
+
+    equipment_type_ids = db.Column(db.Integer, db.ForeignKey("equipment_type.id"), nullable=False)
     worker_id = db.Column(db.Integer, db.ForeignKey("worker.id"), nullable=False)
     
 class Order(db.Model):
@@ -57,4 +60,4 @@ class Order(db.Model):
 
     facility_id = db.Column(db.Integer, db.ForeignKey("facility.id"), nullable=False)
     equipment_id = db.Column(db.Integer, db.ForeignKey("equipment.id"), nullable=False)
-    worker_id = db.Column(db.Integer, db.ForeignKey("worker.id"), nullable=False)
+    worker_id = db.Column(db.Integer, db.ForeignKey("worker.id"))
