@@ -3,7 +3,7 @@ fetch("/api/worker")
     return response.json()
   })
   .then(function(data){
-    consol.log('test data',data)
+    console.log('test data',data)
   })
 
 var app = new Vue({
