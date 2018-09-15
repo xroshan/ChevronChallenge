@@ -1,4 +1,4 @@
-import json
+# main backend entry point for chevron challenge
 
 from flask import Flask, jsonify, request, send_file
 from models import *
@@ -14,43 +14,7 @@ db.init_app(app)
 def index():
     return send_file("templates/index.html")
 
-@app.route("/api/worker", methods=["GET", "POST"])
-def worker_root():
-    
-    if request.method == "POST":
-        # expected data [name, shift, certificaions[](optional)]
-        data = request.get_json()
-
-        worker = Worker(data['name'], data['shift'])
-        db.session.add(worker)
-        db.session.commit()
-        
-        return jsonify(get_dict(worker))
-    
-    else:
-        # get request
-        workers = Worker.query.all()
-
-        return jsonify(get_dict_array(workers))
-
-@app.route("/api/facility", methods=["GET", "POST"])
-def facility_root():
-
-    if request.method == "POST":
-        # expected data [lat, lon]
-        data = request.get_json()
-
-        facility = Facility(data['lat'], data['lon'])
-        db.session.add(facility)
-        db.session.commit()
-
-        return jsonify(get_dict(facility))
-
-    else:
-        # get facilities
-        facilities = Facility.query.all()
-
-        return jsonify(get_dict_array(facilities))
+# API Endpoints, JSON request/response, TODO: validate post data
 
 @app.route("/api/certification", methods=["GET", "POST"])
 def certification_root():
@@ -71,6 +35,25 @@ def certification_root():
 
         return jsonify(get_dict_array(certifications))
 
+@app.route("/api/equipment", methods=["GET", "POST"])
+def equipment_root():
+
+    if request.method == "POST":
+        # expected data [prob, hour_min, hour_max, equipment_type_id, facility_id]
+        data = request.get_json()
+
+        equipment = Equipment(data['prob'], data['hour_min'], data['hour_max'], data['equipment_type_id'], data['facility_id'])
+        db.session.add(equipment)
+        db.session.commit()
+
+        return jsonify(get_dict(equipment))
+
+    else:
+        # get equipments
+        equipments = Equipment.query.all()
+
+        return jsonify(get_dict_array(equipments))
+
 @app.route("/api/equipment_type", methods=["GET", "POST"])
 def equipment_type_root():
 
@@ -89,6 +72,64 @@ def equipment_type_root():
         equipment_types = EquipmentType.query.all()
 
         return jsonify(get_dict_array(equipment_types))
+
+@app.route("/api/facility", methods=["GET", "POST"])
+def facility_root():
+
+    if request.method == "POST":
+        # expected data [lat, lon]
+        data = request.get_json()
+
+        facility = Facility(data['lat'], data['lon'])
+        db.session.add(facility)
+        db.session.commit()
+
+        return jsonify(get_dict(facility))
+
+    else:
+        # get facilities
+        facilities = Facility.query.all()
+
+        return jsonify(get_dict_array(facilities))
+
+@app.route("/api/order", methods=["GET", "POST"])
+def order_root():
+
+    if request.method == "POST":
+        # expected data [priority, time_to_completion, facility_id, equipment_id, worker_id]
+        data = request.get_json()
+
+        order = Order(data['priority'], data['time_to_completion'], data['facility_id'], data['equipment_id'], data['worker_id'])
+        db.session.add(order)
+        db.session.commit()
+
+        return jsonify(get_dict(order))
+
+    else:
+        # get orders
+        orders = Order.query.all()
+
+        return jsonify(get_dict_array(orders))
+
+@app.route("/api/worker", methods=["GET", "POST"])
+def worker_root():
+    
+    if request.method == "POST":
+        # expected data [name, shift, certificaions[](optional)]
+        data = request.get_json()
+
+        worker = Worker(data['name'], data['shift'])
+        db.session.add(worker)
+        db.session.commit()
+        
+        return jsonify(get_dict(worker))
+    
+    else:
+        # get request
+        workers = Worker.query.all()
+
+        return jsonify(get_dict_array(workers))
+
 
 if __name__ == "__main__":
     with app.app_context():

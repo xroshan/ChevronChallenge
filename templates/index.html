@@ -29,30 +29,37 @@
             <div class="adminArea">
                 <span class="formTitle">Add a New Facility</span><br>
                 <span class="formHeading">Facility Location: </span>
-                <input type="text" v-model="aLongitude" placeholder="longitude">,
-                <input type="text" v-model="aLatitude" placeholder="latitude"><br><br>
+                <input type="number" v-model="aLongitude" placeholder="longitude">,
+                <input type="number" v-model="aLatitude" placeholder="latitude">
+                <v-btn id="aSubmitButton" v-on:click="addNewFacility">Submit<v-icon dark right>check_circle</v-icon>
+                </v-btn><br><br>
 
                 <span class="formTitle">Add a New Equipment</span><br>
-                <div class="formHeading">Equipment Type:
+                <div class="formHeading">Type:
                     <select class="dropDown" v-model="aSelectedEquipment">
-                        <option v-for="type in types" v-blind:value="type.key">{{type.name}}</option>
+                        <option v-for="type in types" v-blind:value="type.id">{{type.name}}</option>
                     </select>
                 </div>
 
                 <div class="formHeading">Facility Number to equip:
                     <select class="dropDown" v-model="aSelectedFacility">
-                        <option v-for="facility in facilities" :value="facility.key">{{facility.name}}</option>
+                        <option v-for="facility in facilities" v-blind:value="facility.id">{{`Facility ${facility.id}`}}</option>
                     </select>
                 </div><br>
 
                 <div class="formHeading">Probability of failure:
-                    <input type="number" step="0.01" style="width:190px" v-model="aProbabilityFailure" placeholder="0.00">
+                    <input type="number" step="0.01" style="width:190px" v-model="probabilityFailure" min="0" placeholder="0.00">
                 </div>
 
                 <div class="formHeading">Range of time required to fix:
-                    <input type="number" style="width:50px" v-model="aMinTime" placeholder="0"> -
-                    <input type="number" style="width:50px" v-model="aMaxTime" placeholder="0">
+                    <input type="number" style="width:50px" v-model="hourMin" min="0" placeholder="0"> -
+                    <input type="number" style="width:50px" v-model="hourMax" min="0" placeholder="0">
                 </div><br>
+
+                <div class="formTitle">Add a New Equipment-type:</div>
+                <input type="text" style="width:170px" v-model="aNewEquipmentType" placeholder="Type">
+                <v-btn id="aSubmitButton" v-on:click="addNewEquipmentType">Submit<v-icon dark right>check_circle</v-icon>
+                </v-btn><br><br>
 
                 <span class="formTitle">Add a New Worker</span><br>
                 <span class="formHeading">Worker's Name:</span>
@@ -86,7 +93,7 @@
                 </div>
                 <br><br>
 
-                <v-btn id="submitNewWorker" v-on:click="addNewWorker">Submit<v-icon dark right>check_circle</v-icon>
+                <v-btn id="aSubmitButton" v-on:click="addNewWorker">Submit<v-icon dark right>check_circle</v-icon>
                 </v-btn>
             </div>
         </div>
@@ -112,7 +119,7 @@
                 <input type="text" style="width:150px" v-model="cEquipmentId" placeholder="Eg:Veh279"><br><br>
 
                 <span class="formHeading">Priority level: </span>
-                <select class="dropDown" v-model="cPriorityId" style="width:30px">
+                <select class="dropDown" v-model="priorityId" style="width:30px">
                     <option disabled value="">Please select one</option>
                     <option>1</option>
                     <option>2</option>
