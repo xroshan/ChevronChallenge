@@ -48,12 +48,12 @@
                 </div><br>
 
                 <div class="formHeading">Probability of failure:
-                    <input type="number" step="0.01" style="width:190px" v-model="aProbabilityFailure" min="0" placeholder="0.00">
+                    <input type="number" step="0.01" style="width:190px" v-model="probabilityFailure" min="0" placeholder="0.00">
                 </div>
 
                 <div class="formHeading">Range of time required to fix:
-                    <input type="number" style="width:50px" v-model="aMinTime" min="0" placeholder="0"> -
-                    <input type="number" style="width:50px" v-model="aMaxTime" min="0" placeholder="0">
+                    <input type="number" style="width:50px" v-model="hourMin" min="0" placeholder="0"> -
+                    <input type="number" style="width:50px" v-model="hourMax" min="0" placeholder="0">
                 </div><br>
 
                 <div class="formTitle">Add a New Equipment-type:</div>
@@ -119,7 +119,7 @@
                 <input type="text" style="width:150px" v-model="cEquipmentId" placeholder="Eg:Veh279"><br><br>
 
                 <span class="formHeading">Priority level: </span>
-                <select class="dropDown" v-model="cPriorityId" style="width:30px">
+                <select class="dropDown" v-model="priorityId" style="width:30px">
                     <option disabled value="">Please select one</option>
                     <option>1</option>
                     <option>2</option>
