@@ -38,7 +38,7 @@ def certification_root():
 @app.route("/api/equipment", methods=["GET", "POST"])
 def equipment_root():
 
-    if request.method = "POST":
+    if request.method == "POST":
         # expected data [prob, hour_min, hour_max, equipment_type_id, facility_id]
         data = request.get_json()
 
@@ -95,7 +95,7 @@ def facility_root():
 @app.route("/api/order", methods=["GET", "POST"])
 def order_root():
 
-    if request.method = "POST":
+    if request.method == "POST":
         # expected data [priority, time_to_completion, facility_id, equipment_id, worker_id]
         data = request.get_json()
 
