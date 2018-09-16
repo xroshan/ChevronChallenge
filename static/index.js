@@ -4,10 +4,10 @@ var app = new Vue({
   data: {
     user: "home",
 
-    showProfile:false,
-    aViewProfile:"",
+    showProfile: false,
+    aViewProfile: "",
 
-    workerNameForOrder:"",
+    workerNameForOrder: "",
 
     types: [],
 
@@ -19,11 +19,11 @@ var app = new Vue({
 
     allProfile: [],
 
-    allEquipments:[],
+    allEquipments: [],
 
-    allOrders:[],
+    allOrders: [],
 
-    positionCertificate:"",
+    positionCertificate: "",
 
     aLongitude: "",
     aLatitude: "",
@@ -50,6 +50,7 @@ var app = new Vue({
     this.adminFiller();
     this.clientFiller();
     this.getAllOrders();
+    this.fillOrdersWithName();
   },
   methods: {
     //update admin page
@@ -87,7 +88,7 @@ var app = new Vue({
     },
 
     //get all profile details
-    getProfile: function(){
+    getProfile: function() {
       fetch(`/api/worker/${this.aViewProfile}`)
         .then(res => res.json())
         .then(data => {
@@ -97,7 +98,8 @@ var app = new Vue({
         .catch(err => console.error(err));
     },
 
-    getAllOrders: function(){
+    //get details of all available orders
+    getAllOrders: function() {
       fetch(`/api/order`)
         .then(res => res.json())
         .then(data => {
@@ -107,14 +109,18 @@ var app = new Vue({
         .catch(err => console.error(err));
     },
 
-    getWorkerName: function(input){
-      this.workers.forEach(e => {
-        if(e.id == input)
-          workerNameForOrder = e.name;
+    fillOrdersWithName: function() {
+      allOrders.forEach((e, i) => {
+        fetch(`/api/order/${i}`)
+          .then(res => res.json())
+          .then(data => {
+            this.allOrders[i] = data;
+          })
+          .catch(err => console.error(err));
       });
     },
 
-    getEquipmentByFacility: function(){
+    getEquipmentByFacility: function() {
       fetch(`/api/facility/${this.cSelectedFacility}`)
         .then(res => res.json())
         .then(data => {
@@ -211,13 +217,14 @@ var app = new Vue({
 
     //submit order form
     submitOrderForm: function() {
+      console.log(this.cSelectedEquipment);
       fetch("/api/order", {
         method: "post",
         body: JSON.stringify({
-          priority: this.cPriorityId,
-          time_to_completion: this.cCompleteTime,
+          priority: parseInt(this.cPriorityId),
+          time_to_completion: parseInt(this.cCompleteTime),
           facility_id: this.cSelectedFacility,
-          equipment_id: this.cSelectedEquipment,
+          equipment_id: this.cSelectedEquipment
         }),
         headers: {
           "Content-Type": "application/json"
@@ -234,10 +241,10 @@ var app = new Vue({
     },
 
     //add new certificate to a worker
-    addNewCertificate: function(){
-      fetch("/api/certification",{
-        method:"post",
-        body:JSON.stringify({
+    addNewCertificate: function() {
+      fetch("/api/certification", {
+        method: "post",
+        body: JSON.stringify({
           equipment_type_id: this.aCertificateWorker,
           worker_id: this.aCertificateWorkerName
         }),
@@ -247,10 +254,10 @@ var app = new Vue({
       })
         .then(res => res.json())
         .then(data => {
-          this.aCertificateWorker="";
-          this.aCertificateWorkerName="";
+          this.aCertificateWorker = "";
+          this.aCertificateWorkerName = "";
           this.clientFiller();
-      });
+        });
     }
   }
 });
