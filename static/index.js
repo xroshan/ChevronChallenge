@@ -4,6 +4,8 @@ var app = new Vue({
   data: {
     user: "home",
 
+    showProfile:false,
+
     types: [],
 
     facilities: [],
@@ -11,8 +13,6 @@ var app = new Vue({
     workers: [],
 
     equipments: [],
-
-    certificates: [],
 
     aLongitude: "",
     aLatitude: "",
@@ -181,6 +181,26 @@ var app = new Vue({
           this.cSelectedEquipment = "";
           this.clientFiller();
         });
+    },
+
+    //add new certificate to a worker
+    addNewCertificate: function(){
+      fetch("/api/certification",{
+        method:"post",
+        body:JSON.stringify({
+          equipment_type_id: this.aCertificateWorker,
+          worker_id: this.aCertificateWorkerName
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          this.aCertificateWorker="";
+          this.aCertificateWorkerName="";
+          this.clientFiller();
+      });
     }
   }
 });
