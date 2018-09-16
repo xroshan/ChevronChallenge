@@ -238,7 +238,7 @@ def check_time():
             order.status = 'completed'
 
         # if estimated start time is greater than current time, then start the work i.e. "in_progress".. worker time_until_free is updated
-        if order.est_start_time < datetime.now():
+        elif order.est_start_time < datetime.now():
             order.status = 'in_progress'
             worker = Worker.query.get(order.worker_id)
             worker.time_until_free = order.est_end_time
