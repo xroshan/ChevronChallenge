@@ -50,7 +50,6 @@ var app = new Vue({
     this.adminFiller();
     this.clientFiller();
     this.getAllOrders();
-    this.fillOrdersWithName();
   },
   methods: {
     //update admin page
@@ -105,19 +104,20 @@ var app = new Vue({
         .then(data => {
           console.log(data);
           this.allOrders = data;
+          this.fillOrdersWithName();
         })
         .catch(err => console.error(err));
     },
 
     fillOrdersWithName: function() {
-      allOrders.forEach((e, i) => {
+      for (let i = 0; i < this.allOrders.length; i++) {
         fetch(`/api/order/${i}`)
           .then(res => res.json())
           .then(data => {
             this.allOrders[i] = data;
           })
           .catch(err => console.error(err));
-      });
+      }
     },
 
     getEquipmentByFacility: function() {

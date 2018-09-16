@@ -6,6 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 
@@ -14,21 +15,21 @@
         <div id="title"><img src="../static/assets/chevron_logo.png" height="70px" width="70px" style="margin-right:25px">Chevron
             Challenge</div>
         <div v-if="user=='home'" class="homepage">
-            <v-btn id="homeButton" v-on:click="user='home';fillOrdersWithName();">Home</v-btn>
+            <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
             <div class="homeArea">
                 <span class="formTitle" style="font-size: 30px">Orders</span>
-                <table>
+                <table class="table">
                     <tr>
-                        <th>Order ID</th>
-                        <th>Equipment ID</th>
-                        <th>Priority</th>
-                        <th>Status</th>
-                        <th>Assigned to (Worker ID)</th>
-                        <th>Worker Name</th>
-                        <th>Time to completion</th>
-                        <th>Facility ID</th>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Equipment ID</th>
+                        <th scope="col">Priority</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Assigned to (Worker ID)</th>
+                        <th scope="col">Worker Name</th>
+                        <th scope="col">Time to completion</th>
+                        <th scope="col">Facility ID</th>
                     </tr>
                     <template v-for="order in allOrders">
                         <tr>
@@ -47,7 +48,7 @@
         </div>
         <!-- Admin -->
         <div v-else-if="user=='admin'">
-            <v-btn id="homeButton" v-on:click="user='home';fillOrdersWithName();">Home</v-btn>
+            <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
             <div class="adminArea">
@@ -114,7 +115,7 @@
 
         <!-- Client -->
         <div v-else-if="user=='client'">
-            <v-btn id="homeButton" v-on:click="user='home';fillOrdersWithName();">Home</v-btn>
+            <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'" v-on:click="adminFiller">Client</v-btn>
             <div class="clientArea">
@@ -145,7 +146,7 @@
                     <input type="number" v-model="cCompleteTime" style="width:50px" min="1">&nbsphour(s)</span>
                 <br><br>
 
-                <v-btn id="aSubmitButton" v-on:click="submitOrderForm();getAllOrders();fillOrdersWithName();" style="width:150px;font-size:14px">Submit
+                <v-btn id="aSubmitButton" v-on:click="submitOrderForm();fillOrdersWithName();" style="width:150px;font-size:14px">Submit
                     Order<v-icon dark right>check_circle</v-icon>
                 </v-btn><br>
 
