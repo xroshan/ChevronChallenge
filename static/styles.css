@@ -118,7 +118,7 @@
 
 .dropDown {
   width: 180px;
-  font-size: 20px;
+  font-size: 15px;
   font-family: Lucida Sans Typewriter;
   background-color:white;
   color: black;
@@ -133,7 +133,7 @@ input[type="text"],
 [type="number"],
 [type="datetime-local"] {
   width: 130px;
-  font-size: 20px;
+  font-size: 15px;
   font-family: Lucida Sans Typewriter;
   color: black;
   border-style: solid;
