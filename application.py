@@ -3,6 +3,7 @@
 from flask import Flask, jsonify, request, send_file
 from models import *
 from helpers import get_dict, get_dict_array
+import algo
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
@@ -65,6 +66,9 @@ def equipment_type_root():
         db.session.add(e_type)
         db.session.commit()
 
+        # main algorithm run
+        algo.main()
+
         return jsonify(get_dict(e_type))
     
     else:
@@ -96,12 +100,14 @@ def facility_root():
 def order_root():
 
     if request.method == "POST":
-        # expected data [priority, time_to_completion, facility_id, equipment_id, worker_id]
+        # expected data [priority, time_to_completion, facility_id, equipment_id]
         data = request.get_json()
 
-        order = Order(data['priority'], data['time_to_completion'], data['facility_id'], data['equipment_id'], data['worker_id'])
+        order = Order(data['priority'], data['time_to_completion'], data['facility_id'], data['equipment_id'])
         db.session.add(order)
         db.session.commit()
+
+
 
         return jsonify(get_dict(order))
 
@@ -130,6 +136,12 @@ def worker_root():
 
         return jsonify(get_dict_array(workers))
 
+@app.route("/debug")
+def debug_algo():
+
+    algo.main()
+
+    return jsonify({"success": True})
 
 if __name__ == "__main__":
     with app.app_context():
