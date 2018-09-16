@@ -117,6 +117,10 @@ var app = new Vue({
             this.allOrders[i] = data;
           })
           .catch(err => console.error(err));
+
+          if (i == this.allOrders.length-1) {
+            this.allOrders = Object.assign({}, this.allOrders);
+          }
       }
     },
 

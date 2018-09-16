@@ -33,7 +33,7 @@
                     </tr>
                     <template v-for="order in allOrders">
                         <tr>
-                            <td>{{order.id || "--"}}</td>
+                            <td scope="row">{{order.id || "--"}}</td>
                             <td>{{order.equipment_id || "--"}}</td>
                             <td>{{order.priority || "--"}}</td>
                             <td>{{order.status || "--"}}</td>
