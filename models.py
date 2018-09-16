@@ -80,7 +80,7 @@ class Facility(db.Model):
 class Order(db.Model):
     __tablename__ = "order"
     id = db.Column(db.Integer, primary_key=True)
-    priority = db.Column(db.Float, nullable=False)
+    priority = db.Column(db.Integer, nullable=False)
     time_to_completion = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime,  default=db.func.current_timestamp(), nullable=False)
     status = db.Column(db.String(15), default="pending", nullable=False)
