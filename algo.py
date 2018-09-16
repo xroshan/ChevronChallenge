@@ -147,6 +147,7 @@ def get_best_scenario(orders):
     # scenario starts with current datetime
     scenario = AnyNode(testing_infos=dict(),
                        testing_infos2=dict(), value=datetime.now())
+    test = 0
     depth = 0
     for order in orders:
         partrees = []
@@ -167,6 +168,7 @@ def get_best_scenario(orders):
             # brute force with all workers and get the latest time of completion
             workers = get_all_workers(order.equipment_id)
             for worker in workers:
+                test = test + 1
                 # if worker has not been assigned earlier work, set his/her leisure time
                 if not worker.id in res:
                     res[worker.id] = worker.time_until_free
@@ -208,6 +210,7 @@ def get_best_scenario(orders):
             best = p
     # pick the best path as array and return it
     result = recover_best_path(best)
+    #print(test)
     return result
 
 
