@@ -39,10 +39,10 @@ def certification_root():
 def equipment_root():
 
     if request.method == "POST":
-        # expected data [prob, hour_min, hour_max, equipment_type_id, facility_id]
+        # expected data [equipment_type_id, facility_id]
         data = request.get_json()
 
-        equipment = Equipment(data['prob'], data['hour_min'], data['hour_max'], data['equipment_type_id'], data['facility_id'])
+        equipment = Equipment(data['equipment_type_id'], data['facility_id'])
         db.session.add(equipment)
         db.session.commit()
 
@@ -58,10 +58,10 @@ def equipment_root():
 def equipment_type_root():
 
     if request.method == "POST":
-        # expected data [name]
+        # expected data [name, prob, hour_min, hour_max]
         data = request.get_json()
 
-        e_type = EquipmentType(data['name'])
+        e_type = EquipmentType(data['name'], data['prob'], data['hour_min'], data['hour_max'])
         db.session.add(e_type)
         db.session.commit()
 

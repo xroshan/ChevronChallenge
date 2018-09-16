@@ -28,18 +28,12 @@ class Certification(db.Model):
 class Equipment(db.Model):
     __tablename__ = "equipment"
     id = db.Column(db.Integer, primary_key=True)
-    prob = db.Column(db.Float, nullable=False)
-    hour_min = db.Column(db.Integer, nullable=False)
-    hour_max = db.Column(db.Integer, nullable=False)
 
     equipment_type_id = db.Column(db.Integer, db.ForeignKey("equipment_type.id"), nullable=False)
     facility_id = db.Column(db.Integer, db.ForeignKey("facility.id"), nullable=False)
     orders = db.relationship("Order", backref="equipment", lazy=True)
 
-    def __init__(self, prob, hour_min, hour_max, e_type_id, facility_id):
-        self.prob = prob
-        self.hour_min = hour_min
-        self.hour_max = hour_max
+    def __init__(self, e_type_id, facility_id):
         self.equipment_type_id = e_type_id
         self.facility_id = facility_id
 
@@ -50,12 +44,18 @@ class EquipmentType(db.Model):
     __tablename__ = "equipment_type"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(25), nullable=False)
+    prob = db.Column(db.Float, nullable=False)
+    hour_min = db.Column(db.Integer, nullable=False)
+    hour_max = db.Column(db.Integer, nullable=False)
 
     equipments = db.relationship("Equipment", backref="equipment_type", lazy=True)
     certifications = db.relationship("Certification", backref="equipment_type", lazy=True)
 
-    def __init__(self, name):
+    def __init__(self, name, prob, hour_min, hour_max):
         self.name = name
+        self.prob = prob
+        self.hour_min = hour_min
+        self.hour_max = hour_max
 
     def __repr__(self):
         return f'<Equipment Type {self.name}>'
