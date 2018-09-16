@@ -231,6 +231,23 @@ def order_root():
 
         return jsonify(get_dict_array(orders))
 
+@app.route("/api/order/<int:order_id>")
+def order(order_id):
+
+    # get response
+    order = Order.query.get(order_id)
+
+    if order is None:
+        return jsonify({"success": False, "message": "Order with key not found!"}), 404
+
+    # build response
+    res = get_dict(order)
+
+    # add relations
+    res['worker_name'] = order.worker.name if order.worker else None
+
+    return jsonify(res)
+
 @app.route("/api/worker", methods=["GET", "POST"])
 def worker_root():
     
