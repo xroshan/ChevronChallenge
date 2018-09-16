@@ -1,5 +1,6 @@
 var app = new Vue({
   el: "#container",
+
   data: {
     user: "home",
 
@@ -10,6 +11,8 @@ var app = new Vue({
     workers: [],
 
     equipments: [],
+
+    certificates: [],
 
     aLongitude: "",
     aLatitude: "",
@@ -165,7 +168,6 @@ var app = new Vue({
           time_to_completion: this.cCompleteTime,
           facility_id: this.cSelectedFacility,
           equipment_id: this.cSelectedEquipment,
-          worker_id: this.cSelectedWorker
         }),
         headers: {
           "Content-Type": "application/json"
@@ -177,7 +179,6 @@ var app = new Vue({
           this.cCompleteTime = "";
           this.cSelectedFacility = "";
           this.cSelectedEquipment = "";
-          this.cSelectedWorker = "";
           this.clientFiller();
         });
     }

@@ -11,133 +11,115 @@
 
 <body>
     <div id="container" class="grid-container">
-        <div id="title"><img src="../static/assets/chevron_logo.png" height="70px" width="70px" style="margin-right:25px">Chevron
-            Challenge</div>
-        <div v-if="user=='home'" class="homepage">
-            <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
-            <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
-            <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
-            <div class="homeArea">
-                <span class="formTitle"><u>About Us</u></span>
+        <div id="left">
+            <div id="title"><img src="../static/assets/chevron_logo.png" height="70px" width="70px" style="margin-right:25px">Chevron
+                Challenge</div>
+            <div v-if="user=='home'" class="homepage">
+                <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
+                <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
+                <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
+                <div class="homeArea">
+                    <span class="formTitle"><u>About Us</u></span>
+                </div>
+            </div>
+            <!-- Admin -->
+            <div v-else-if="user=='admin'">
+                <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
+                <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
+                <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
+                <div class="adminArea">
+                    <span class="formTitle">Add a New Facility</span><br>
+                    <span class="formHeading">Facility Location: </span>
+                    <input type="number" v-model="aLongitude" placeholder="longitude">,
+                    <input type="number" v-model="aLatitude" placeholder="latitude">
+                    <v-btn id="aSubmitButton" v-on:click="addNewFacility">Submit<v-icon dark right>check_circle</v-icon>
+                    </v-btn><br>
+
+                    <span class="formTitle">Add a Equipment to Facility</span><br>
+                    <div class="formHeading">Type:
+                        <select class="dropDown" v-model="aSelectedEquipment">
+                            <option v-for="type in types" :value="type.id">{{type.name}}</option>
+                        </select>
+                    </div>
+
+                    <div class="formHeading">Facility Number to equip:
+                        <select class="dropDown" v-model="aSelectedFacility">
+                            <option v-for="facility in facilities" :value="facility.id">{{`Facility ${facility.id}`}}</option>
+                        </select>
+                        <v-btn id="aSubmitButton" v-on:click="addNewEquipment">Submit<v-icon dark right>check_circle</v-icon>
+                        </v-btn><br>
+                    </div>
+
+                    <div class="formTitle">Add a New Equipment-type:</div><br>
+                    <div class="formHeading">Type:</div>
+                    <input type="text" style="width:170px" v-model="aNewEquipmentType" placeholder="Type"><br>
+                    <span class="formHeading">Probability of failure:</span>
+                    <input type="number" step="0.01" style="width:190px" v-model="probabilityFailure" min="0"
+                        placeholder="0.00">
+
+                    <div class="formHeading">Range of time required to fix:
+                        <input type="number" style="width:50px" v-model="hourMin" min="0" placeholder="0"> -
+                        <input type="number" style="width:50px" v-model="hourMax" min="0" placeholder="0">
+
+                        <v-btn id="aSubmitButton" v-on:click="addNewEquipmentType">Submit<v-icon dark right>check_circle</v-icon>
+                        </v-btn><br>
+                    </div>
+
+                    <span class="formTitle">Add a New Worker</span><br>
+                    <span class="formHeading">Worker's Name:</span>
+                    <input type="text" style="width:200px" v-model="aWorkerName" placeholder="FullName"><span style="color:black"></span><br>
+
+                    <span class="formHeading">Worker's Shift:</span>
+                    <input type="text" style="width:200px" v-model="aWorkerShift" placeholder="Shift">
+                    <v-btn id="aSubmitButton" v-on:click="addNewWorker">Submit<v-icon dark right>check_circle</v-icon>
+                    </v-btn>
+                </div>
+            </div>
+
+            <!-- Client -->
+            <div v-else-if="user=='client'">
+                <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
+                <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
+                <v-btn id="clientButton" v-on:click="user='client'" v-on:click="adminFiller">Client</v-btn>
+                <div class="clientArea">
+                    <span class="formTitle"><u>Workorder</u></span><br><br>
+                    <div class="formHeading">Facility
+                        <select class="dropDown" v-model="cSelectedFacility" style="width:30px">
+                            <option v-for="facility in facilities" :value="facility.id">{{facility.id}}</option>
+                        </select>
+                    </div><br>
+
+                    <span class="formHeading">Equipment: </span>
+                    <select class="dropDown" v-model="cSelectedEquipment">
+                        <option v-for="equipment in equipments" v-if="equipment.facility_id == cSelectedFacility"
+                            :value="equipment.facility_id">{{`${types[equipment.facility_id].name}
+                            ${equipment.equipment_type_id}`}}</option>
+                    </select><br>
+
+                    <span class="formHeading">Priority level: </span>
+                    <select class="dropDown" v-model="cPriorityId" style="width:30px">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select><br><br>
+
+                    <span class="formHeading">Time to complete:
+                        <input type="number" v-model="cCompleteTime" style="width:50px" min="1">&nbsphour(s)</span>
+                    <br><br>
+
+                    <v-btn id="aSubmitButton" v-on:click="submitOrderForm">Submit<v-icon dark right>check_circle</v-icon>
+                    </v-btn>
+                </div>
             </div>
         </div>
-        <!-- Admin -->
-        <div v-else-if="user=='admin'">
-            <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
-            <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
-            <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
-            <div class="adminArea">
-                <span class="formTitle">Add a New Facility</span><br>
-                <span class="formHeading">Facility Location: </span>
-                <input type="number" v-model="aLongitude" placeholder="longitude">,
-                <input type="number" v-model="aLatitude" placeholder="latitude">
-                <v-btn id="aSubmitButton" v-on:click="addNewFacility">Submit<v-icon dark right>check_circle</v-icon>
-                </v-btn><br><br>
 
-                <span class="formTitle">Add a Equipment to Facility</span><br>
-                <div class="formHeading">Type:
-                    <select class="dropDown" v-model="aSelectedEquipment">
-                        <option v-for="type in types" :value="type.id">{{type.name}}</option>
-                    </select>
-                </div>
-
-                <div class="formHeading">Facility Number to equip:
-                    <select class="dropDown" v-model="aSelectedFacility">
-                        <option v-for="facility in facilities" :value="facility.id">{{`Facility ${facility.id}`}}</option>
-                    </select>
-                    <v-btn id="aSubmitButton" v-on:click="addNewEquipment">Submit<v-icon dark right>check_circle</v-icon>
-                    </v-btn><br><br>
-                </div><br>
-
-                <div class="formTitle">Add a New Equipment-type:</div><br>
-                <span class="formHeading">Type:</span>
-                <input type="text" style="width:170px" v-model="aNewEquipmentType" placeholder="Type"><br>
-                <span class="formHeading">Probability of failure:</span>
-                    <input type="number" step="0.01" style="width:190px" v-model="probabilityFailure" min="0" placeholder="0.00">
-
-                <div class="formHeading">Range of time required to fix:
-                    <input type="number" style="width:50px" v-model="hourMin" min="0" placeholder="0"> -
-                    <input type="number" style="width:50px" v-model="hourMax" min="0" placeholder="0">
-                    
-                </div>
-                <v-btn id="aSubmitButton" v-on:click="addNewEquipmentType">Submit<v-icon dark right>check_circle</v-icon>
-                </v-btn><br><br>
-
-                <span class="formTitle">Add a New Worker</span><br>
-                <span class="formHeading">Worker's Name:</span>
-                <input type="text" style="width:200px" v-model="aWorkerName" placeholder="FullName"><span style="color:black"></span><br>
-               
-                <span class="formHeading">Worker's Shift:</span>
-                <input type="text" style="width:200px" v-model="aWorkerShift" placeholder="Shift">
-               
-                <div class="formHeading" style="margin-top:5px">Certification:
-                    <input type="checkbox" id="sensor" value="sensor" v-model="checkedItems">
-                    <label for="sensor">Sensor</label>
-                    <input type="checkbox" id="security" value="security" v-model="checkedItems">
-                    <label for="security">Security</label>
-                    <input type="checkbox" id="networking" value="networking" v-model="checkedItems">
-                    <label for="networking">Networking</label>
-                    <input type="checkbox" id="pump" value="pump" v-model="checkedItems">
-                    <label for="pump">Pump</label>
-                    <input type="checkbox" id="HVAC" value="HVAC" v-model="checkedItems">
-                    <label for="HVAC">HVAC</label>
-                    <input type="checkbox" id="vehicle" value="vehicle" v-model="checkedItems">
-                    <label for="vehicle">Vehicle</label><br>
-                    <input type="checkbox" id="conveyor" value="conveyor" v-model="checkedItems">
-                    <label for="conveyor">Conveyor</label>
-                    <input type="checkbox" id="separator" value="separator" v-model="checkedItems">
-                    <label for="separator">Separator</label>
-                    <input type="checkbox" id="compressor" value="compressor" v-model="checkedItems">
-                    <label for="compressor">Compressor</label>
-                    <input type="checkbox" id="electricity" value="electricity" v-model="checkedItems">
-                    <label for="electricity">Electricity</label>
-                    <br>
-                </div>
-                <br>
-
-                <v-btn id="aSubmitButton" v-on:click="addNewWorker">Submit<v-icon dark right>check_circle</v-icon>
-                </v-btn>
-            </div>
-        </div>
-
-        <!-- Client -->
-        <div v-else-if="user=='client'">
-            <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
-            <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
-            <v-btn id="clientButton" v-on:click="user='client'" v-on:click="adminFiller">Client</v-btn>
-            <div class="clientArea">
-                <span class="formTitle"><u>Workorder</u></span><br><br>
-                <div class="formHeading">Facility
-                    <select class="dropDown" v-model="cSelectedFacility" style="width:30px">
-                        <option v-for="facility in facilities" :value="facility.id">{{facility.id}}</option>
-                    </select>
-                </div><br>
-
-                <div class="formHeading">Worker:
-                    <select class="dropDown" v-model="cSelectedWorker">
-                        <option v-for="worker in workers" :value="worker.id">{{worker.name}}</option>
-                    </select>
-                </div><br>
-                <span class="formHeading">Equipment: </span>{{`${} ${}`}}
-                <select class="dropDown" v-model="cSelectedEquipment"> []
-                    <option v-for="equipment in equipments" :value="equipment.facility_id">{{`${types[equipment.facility_id].name} ${equipment.equipment_type_id}`}}</option>
-                </select><br>
-
-                <span class="formHeading">Priority level: </span>
-                <select class="dropDown" v-model="cPriorityId" style="width:30px">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select><br><br>
-
-                <span class="formHeading">Time to complete:
-                    <input type="number" v-model="cCompleteTime" style="width:50px" min="1">&nbsphour(s)</span>
-                <br><br>
-
-                <v-btn id="aSubmitButton" v-on:click="submitOrderForm">Submit<v-icon dark right>check_circle</v-icon>
-                </v-btn>
+        <div class="right">
+            <div class="formHeading" style="padding-left:500px">Worker:
+                <select class="dropDown" v-model="aCertificateWorker">
+                    <option v-for="worker in workers" :value="worker.id">{{worker.name}}</option>
+                </select>
             </div>
         </div>
     </div>
