@@ -96,6 +96,25 @@ def facility_root():
 
         return jsonify(get_dict_array(facilities))
 
+@app.route("/api/facility/<int:fid>")
+def facility(fid):
+
+    # get response
+    facility = Facility.query.get(fid)
+
+    if facility is None:
+        return jsonify({"success": False, "message": "Facility with key not found!"}), 404
+
+    res = get_dict(facility)
+
+    # add relations
+    res['equipments'] = []
+    for e in facility.equipments:
+        res['equipments'].append({"id": e.id, "name": e.equipment_type.name, "equipment_type_id": e.equipment_type_id})
+    res['orders'] = get_dict_array(facility.orders)
+
+    return jsonify(res)
+
 @app.route("/api/order", methods=["GET", "POST"])
 def order_root():
 
@@ -106,8 +125,6 @@ def order_root():
         order = Order(data['priority'], data['time_to_completion'], data['facility_id'], data['equipment_id'])
         db.session.add(order)
         db.session.commit()
-
-
 
         return jsonify(get_dict(order))
 
@@ -141,6 +158,9 @@ def worker(worker_id):
 
     # get response
     worker = Worker.query.get(worker_id)
+
+    if worker is None:
+        return jsonify({"success": False, "message": "Worker with key not found!"}), 404
 
     # build response
     res = get_dict(worker)
