@@ -230,7 +230,7 @@ def order_root():
 
     else:
         # get orders
-        orders = Order.query.all()
+        orders = Order.query.order_by(Order.created_at.desc()).all()
 
         return jsonify(get_dict_array(orders))
 
