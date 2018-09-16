@@ -5,6 +5,7 @@ var app = new Vue({
     user: "home",
 
     showProfile:false,
+    aViewProfile:"",
 
     types: [],
 
@@ -13,6 +14,12 @@ var app = new Vue({
     workers: [],
 
     equipments: [],
+
+    allProfile: [],
+
+    allEquipments:[],
+
+    positionCertificate:"",
 
     aLongitude: "",
     aLatitude: "",
@@ -70,6 +77,27 @@ var app = new Vue({
         .then(res => res.json())
         .then(data => {
           this.equipments = data;
+        })
+        .catch(err => console.error(err));
+    },
+
+    //get all profile details
+    getProfile: function(){
+      fetch(`/api/worker/${this.aViewProfile}`)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.allProfile = data;
+        })
+        .catch(err => console.error(err));
+    },
+
+    getEquipmentByFacility: function(){
+      fetch(`/api/facility/${this.cSelectedFacility}`)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.allEquipments = data;
         })
         .catch(err => console.error(err));
     },

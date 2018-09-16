@@ -99,12 +99,12 @@
                     <select class="dropDown" v-model="cSelectedFacility" style="width:30px">
                         <option v-for="facility in facilities" :value="facility.id">{{facility.id}}</option>
                     </select>
+                    <v-btn id="aSubmitButton" v-on:click="getEquipmentByFacility();" style="width:10px;height:25px;margin-bottom:15px">OK
+                    </v-btn>
                 </div><br>
-
                 <span class="formHeading">Equipment: </span>
                 <select class="dropDown" v-model="cSelectedEquipment">
-                    <option v-for="equipment in equipments" v-if="equipment.facility_id == cSelectedFacility" :value="equipment.facility_id">{{`${types[equipment.facility_id].name}
-                        ${equipment.equipment_type_id}`}}</option>
+                    <option v-for="equipment in allEquipments.equipments"  :value="equipment.facility_id">{{`${equipment.name} ${equipment.id}`}}</option>
                 </select><br>
 
                 <span class="formHeading">Priority level: </span>
@@ -129,13 +129,15 @@
                 <select class="dropDown" v-model="aViewProfile">
                     <option v-for="worker in workers" :value="worker.id">{{worker.name}}</option>
                 </select>
-                <v-btn id="aSubmitButton" v-on:click="showProfile=true;clientFiller();" style="width:50px;height:25px;margin-bottom: 15px">Search</v-btn><br>
+                <v-btn id="aSubmitButton" v-on:click="showProfile=true;clientFiller();getProfile();" style="width:50px;height:25px;margin-bottom: 15px">Search</v-btn><br>
                 <div v-if="showProfile">
-                    <div class="formHeading">
+                    <span class="formHeading">
                         <ul>
-                            <li>Name: {{workers[aViewProfile-1].name}}</li>
-                            <li>Shift: {{workers[aViewProfile-1].shift}}</li>
-                            <li>Certificates:{{workers[aViewProfile-1]</li>
+                            <li>Name: {{allProfile.name}}</li>
+                            <li>ID: {{allProfile.id}}</li>
+                            <li>Shift: {{allProfile.shift}}</li>
+                            <li>Certificates: <span v-for="cert in allProfile.certifications">{{cert.name}}, </span></li>
+                            
                         </ul><br>
                         
                     </div>
