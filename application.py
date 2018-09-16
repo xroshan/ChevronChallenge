@@ -24,6 +24,22 @@ def certification_root():
         # expected data [equipment_type_id, worker_id]
         data = request.get_json()
 
+        # sanitization
+        if not data:
+            return jsonify({"success": False, "message": "Missing body."}), 400
+
+        if not 'equipment_type_id' in data or not 'worker_id' in data:
+            return jsonify({"success": False, "message": "Missing body fields."}), 400
+
+        if not isinstance(data['equipment_type_id'], int) or not isinstance(data['worker_id'], int):
+            return jsonify({"success": False, "message": "Invalid body fields."}), 400
+
+        if not EquipmentType.query.get(data['equipment_type_id']):
+            return jsonify({"success": False, "message": "Equipment Type key not found."}), 404
+
+        if not Worker.query.get(data['worker_id']):
+            return jsonify({"success": False, "message": "Worker key not found."}), 404
+
         certification = Certification(data['equipment_type_id'], data['worker_id'])
         db.session.add(certification)
         db.session.commit()
@@ -42,6 +58,22 @@ def equipment_root():
     if request.method == "POST":
         # expected data [equipment_type_id, facility_id]
         data = request.get_json()
+
+        # sanitization
+        if not data:
+            return jsonify({"success": False, "message": "Missing body."}), 400
+
+        if not 'equipment_type_id' in data or not 'facility_id' in data:
+            return jsonify({"success": False, "message": "Missing body fields."}), 400
+
+        if not isinstance(data['equipment_type_id'], int) or not isinstance(data['facility_id'], int):
+            return jsonify({"success": False, "message": "Invalid body fields."}), 400
+
+        if not EquipmentType.query.get(data['equipment_type_id']):
+            return jsonify({"success": False, "message": "Equipment Type key not found."}), 404
+
+        if not Facility.query.get(data['facility_id']):
+            return jsonify({"success": False, "message": "Facility key not found."}), 404
 
         equipment = Equipment(data['equipment_type_id'], data['facility_id'])
         db.session.add(equipment)
