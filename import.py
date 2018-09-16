@@ -47,7 +47,7 @@ def add_equipment_types():
             hrange = cols[3].split('-')
             print(cols, hrange)
 
-            e_type = EquipmentType(cols[1].strip().lower(), float(2), int(hrange[0]), int(hrange[1]))
+            e_type = EquipmentType(cols[1].strip().lower(), float(cols[2]), int(hrange[0]), int(hrange[1]))
             session.add(e_type)
 
     session.commit()
@@ -111,7 +111,7 @@ def add_work_orders():
     for row in range(order_sheet.nrows):
         cols = order_sheet.row_values(row)
 
-        if row > 1:
+        if row > 1 and row < 7:
             f_id = int(cols[2][3])
 
             e_id = add_equipment(cols[3].strip().lower(), f_id)
