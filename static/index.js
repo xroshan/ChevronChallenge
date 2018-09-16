@@ -9,6 +9,8 @@ var app = new Vue({
 
     workers: [],
 
+    equipments: [],
+
     aLongitude: "",
     aLatitude: "",
 
@@ -23,15 +25,16 @@ var app = new Vue({
     aSelectedEquipment: "",
     aSelectedFacility: "",
 
-    cPriorityId:"",
-    cCompleteTime:"",
-    cSelectedFacility:"",
-    cSelectedEquipment:"",
-    cSelectedWorker:""
-
+    cPriorityId: "",
+    cCompleteTime: "",
+    cSelectedFacility: "",
+    cSelectedEquipment: "",
+    cSelectedWorker: "",
+    cDate: ""
   },
   mounted() {
     this.adminFiller();
+    this.clientFiller();
   },
   methods: {
     //update admin page
@@ -52,11 +55,18 @@ var app = new Vue({
     },
 
     //update client page
-    clientFiller: function(){
+    clientFiller: function() {
       fetch("api/worker")
         .then(res => res.json())
         .then(data => {
           this.workers = data;
+        })
+        .catch(err => console.error(err));
+
+      fetch("/api/equipment")
+        .then(res => res.json())
+        .then(data => {
+          this.equipments = data;
         })
         .catch(err => console.error(err));
     },
@@ -107,7 +117,10 @@ var app = new Vue({
       fetch("/api/equipment_type", {
         method: "post",
         body: JSON.stringify({
-          name: this.aNewEquipmentType
+          name: this.aNewEquipmentType,
+          prob: this.probabilityFailure,
+          hour_min: this.hourMin,
+          hour_max: this.hourMax
         }),
         headers: {
           "Content-Type": "application/json"
@@ -116,6 +129,9 @@ var app = new Vue({
         .then(res => res.json())
         .then(data => {
           this.aNewEquipmentType = "";
+          this.probabilityFailure = "";
+          this.hourMin = "";
+          this.hourMax = "";
           this.adminFiller();
         });
     },
@@ -125,9 +141,6 @@ var app = new Vue({
       fetch("/api/equipment", {
         method: "post",
         body: JSON.stringify({
-          prob: this.probabilityFailure,
-          hour_min: this.hourMin,
-          hour_max: this.hourMax,
           equipment_type_id: this.aSelectedEquipment,
           facility_id: this.aSelectedFacility
         }),
@@ -137,9 +150,6 @@ var app = new Vue({
       })
         .then(res => res.json())
         .then(data => {
-          this.probabilityFailure = "";
-          this.hourMax = "";
-          this.hourMin = "";
           this.aSelectedEquipment = "";
           this.aSelectedFacility = "";
           this.adminFiller();
@@ -147,29 +157,29 @@ var app = new Vue({
     },
 
     //submit order form
-    submitOrderForm: function(){
-      fetch("/api/order",{
-        method:"post",
-        body:JSON.stringify({
-          priority:this.cPriorityId,
-          time_to_completion:this.cCompleteTime,
-          facility_id:this.cSelectedFacility,
-          equipment_id:this.cSelectedEquipment,
-          worker_id:this.cSelectedWorker
+    submitOrderForm: function() {
+      fetch("/api/order", {
+        method: "post",
+        body: JSON.stringify({
+          priority: this.cPriorityId,
+          time_to_completion: this.cCompleteTime,
+          facility_id: this.cSelectedFacility,
+          equipment_id: this.cSelectedEquipment,
+          worker_id: this.cSelectedWorker
         }),
         headers: {
           "Content-Type": "application/json"
         }
       })
-      .then(res => res.json())
-      .then(data => {
-        this.cPriorityId= "";
-        this.cCompleteTime = "";
-        this.cSelectedFacility = "";
-        this.cSelectedEquipment = "";
-        this.cSelectedWorker = "";
-        this.clientFiller();
-      });
+        .then(res => res.json())
+        .then(data => {
+          this.cPriorityId = "";
+          this.cCompleteTime = "";
+          this.cSelectedFacility = "";
+          this.cSelectedEquipment = "";
+          this.cSelectedWorker = "";
+          this.clientFiller();
+        });
     }
   }
 });

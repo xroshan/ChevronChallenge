@@ -34,7 +34,7 @@
                 <v-btn id="aSubmitButton" v-on:click="addNewFacility">Submit<v-icon dark right>check_circle</v-icon>
                 </v-btn><br><br>
 
-                <span class="formTitle">Add a New Equipment</span><br>
+                <span class="formTitle">Add a Equipment to Facility</span><br>
                 <div class="formHeading">Type:
                     <select class="dropDown" v-model="aSelectedEquipment">
                         <option v-for="type in types" :value="type.id">{{type.name}}</option>
@@ -45,21 +45,21 @@
                     <select class="dropDown" v-model="aSelectedFacility">
                         <option v-for="facility in facilities" :value="facility.id">{{`Facility ${facility.id}`}}</option>
                     </select>
+                    <v-btn id="aSubmitButton" v-on:click="addNewEquipment">Submit<v-icon dark right>check_circle</v-icon>
+                    </v-btn><br><br>
                 </div><br>
 
-                <div class="formHeading">Probability of failure:
+                <div class="formTitle">Add a New Equipment-type:</div><br>
+                <span class="formHeading">Type:</span>
+                <input type="text" style="width:170px" v-model="aNewEquipmentType" placeholder="Type"><br>
+                <span class="formHeading">Probability of failure:</span>
                     <input type="number" step="0.01" style="width:190px" v-model="probabilityFailure" min="0" placeholder="0.00">
-                </div>
 
                 <div class="formHeading">Range of time required to fix:
                     <input type="number" style="width:50px" v-model="hourMin" min="0" placeholder="0"> -
                     <input type="number" style="width:50px" v-model="hourMax" min="0" placeholder="0">
-                    <v-btn id="aSubmitButton" v-on:click="addNewEquipment">Submit<v-icon dark right>check_circle</v-icon>
-                    </v-btn><br><br>
+                    
                 </div>
-
-                <div class="formTitle">Add a New Equipment-type:</div>
-                <input type="text" style="width:170px" v-model="aNewEquipmentType" placeholder="Type">
                 <v-btn id="aSubmitButton" v-on:click="addNewEquipmentType">Submit<v-icon dark right>check_circle</v-icon>
                 </v-btn><br><br>
 
@@ -118,12 +118,13 @@
                         <option v-for="worker in workers" :value="worker.id">{{worker.name}}</option>
                     </select>
                 </div><br>
-                <span class="formHeading">Equipment Id: </span>
-                <input type="text" style="width:150px" v-model="cSelectedEquipment" placeholder="Eg:Veh279"><br><br>
+                <span class="formHeading">Equipment: </span>{{`${} ${}`}}
+                <select class="dropDown" v-model="cSelectedEquipment"> []
+                    <option v-for="equipment in equipments" :value="equipment.facility_id">{{`${types[equipment.facility_id].name} ${equipment.equipment_type_id}`}}</option>
+                </select><br>
 
                 <span class="formHeading">Priority level: </span>
                 <select class="dropDown" v-model="cPriorityId" style="width:30px">
-                    <option disabled value="">Please select one</option>
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -132,27 +133,13 @@
                 </select><br><br>
 
                 <span class="formHeading">Time to complete:
-                    <input type="number" v-model="cCompleteTime" style="width:50px">&nbsphour(s)</span>
+                    <input type="number" v-model="cCompleteTime" style="width:50px" min="1">&nbsphour(s)</span>
                 <br><br>
-
-                <span class="formHeading">Today's Date: </span>
-                <input type="datetime-local" style="width:320px" v-model="cDate"><br><br><br>
 
                 <v-btn id="aSubmitButton" v-on:click="submitOrderForm">Submit<v-icon dark right>check_circle</v-icon>
                 </v-btn>
             </div>
         </div>
-
-        <!-- Submit -->
-        <div v-else-if="user=='submit'">
-            <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
-            <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
-            <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
-            <div class="afterSubmit">
-                <span id="submitSuccess">Submission Success!</span>
-            </div>
-        </div>
-
     </div>
 </body>
 <script src="../static/index.js"></script>
