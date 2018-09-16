@@ -170,10 +170,7 @@ def get_best_scenario(orders):
                 # if worker has not been assigned earlier work, set his/her leisure time
                 if not worker.id in res:
                     res[worker.id] = worker.time_until_free
-                    # have value for the start_time of work as well as the end time of work
-
-                start_time = res[worker.id]
-
+                    
                 # last place the worker was in
                 if not worker.id in res2:
                     res2[worker.id] = get_facility(worker)
@@ -183,6 +180,9 @@ def get_best_scenario(orders):
                     order.facility_id, res2[worker.id])
 
                 res2[worker.id] = order.facility_id
+
+                # have value for the start_time of work
+                start_time = res[worker.id] + timedelta(hours=travel_time)
 
                 # total time for worker
                 res[worker.id] = get_total_time(
@@ -237,7 +237,7 @@ def check_time():
         # if estimated start time is greater than current time, then start the work i.e. "in_progress".. worker time_until_free is updated
         if order.est_start_time < datetime.now():
             order.status = 'in_progress'
-            worker = Worker.query.get(order.id)
+            worker = Worker.query.get(order.worker_id)
             worker.time_until_free = order.est_end_time
     # update database
     db.session.commit()
