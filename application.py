@@ -136,6 +136,22 @@ def worker_root():
 
         return jsonify(get_dict_array(workers))
 
+@app.route("/api/worker/<int:worker_id>")
+def worker(worker_id):
+
+    # get response
+    worker = Worker.query.get(worker_id)
+
+    # build response
+    res = get_dict(worker)
+
+    # add relations
+    res['certifications'] = get_dict_array(worker.certifications)
+    res['orders'] = get_dict_array(worker.orders)
+
+    return jsonify(res)
+    
+
 @app.route("/debug")
 def debug_algo():
 

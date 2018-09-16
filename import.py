@@ -47,7 +47,7 @@ def add_equipment_types():
             hrange = cols[3].split('-')
             print(cols, hrange)
 
-            e_type = EquipmentType(cols[1].strip().lower(), float(2), int(hrange[0]), int(hrange[1]))
+            e_type = EquipmentType(cols[1].strip().lower(), float(cols[2]), int(hrange[0]), int(hrange[1]))
             session.add(e_type)
 
     session.commit()
