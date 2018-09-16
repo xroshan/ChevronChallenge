@@ -223,6 +223,9 @@ def order_root():
         db.session.add(order)
         db.session.commit()
 
+        # after each call
+        algo.main()
+
         return jsonify(get_dict(order))
 
     else:
@@ -315,4 +318,4 @@ def debug_algo():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True, use_reloader=True)
+    app.run(debug=False, use_reloader=True)
