@@ -7,6 +7,8 @@ var app = new Vue({
     showProfile:false,
     aViewProfile:"",
 
+    workerNameForOrder:"",
+
     types: [],
 
     facilities: [],
@@ -18,6 +20,8 @@ var app = new Vue({
     allProfile: [],
 
     allEquipments:[],
+
+    allOrders:[],
 
     positionCertificate:"",
 
@@ -45,6 +49,7 @@ var app = new Vue({
   mounted() {
     this.adminFiller();
     this.clientFiller();
+    this.getAllOrders();
   },
   methods: {
     //update admin page
@@ -90,6 +95,23 @@ var app = new Vue({
           this.allProfile = data;
         })
         .catch(err => console.error(err));
+    },
+
+    getAllOrders: function(){
+      fetch(`/api/order`)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.allOrders = data;
+        })
+        .catch(err => console.error(err));
+    },
+
+    getWorkerName: function(input){
+      this.workers.forEach(e => {
+        if(e.id == input)
+          workerNameForOrder = e.name;
+      });
     },
 
     getEquipmentByFacility: function(){

@@ -175,3 +175,14 @@ input[type="checkbox"] {
     color: black;
     margin-left: 400px;
 }
+
+table,th,td{
+  border:1px solid black;
+  text-align: center;
+}
+
+table{
+  border-collapse: collapse;
+  margin-top: 20px;
+  width: 80%;
+}
