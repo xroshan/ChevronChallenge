@@ -119,7 +119,7 @@
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'" v-on:click="adminFiller">Client</v-btn>
             <div class="clientArea">
-                <span class="formTitle"><u>Workorder</u></span><br><br>
+                <span class="formTitle" ><u>Workorder</u></span><br><br>
                 <div class="formHeading">Facility
                     <select class="dropDown" v-model="cSelectedFacility" style="width:30px">
                         <option v-for="facility in facilities" :value="facility.id">{{facility.id}}</option>

@@ -110,18 +110,29 @@ var app = new Vue({
     },
 
     fillOrdersWithName: function() {
-      for (let i = 1; i < this.allOrders.length; i++) {
-        fetch(`/api/order/${i}`)
-          .then(res => res.json())
-          .then(data => {
-            this.allOrders[i] = data;
-          })
-          .catch(err => console.error(err));
 
-          if (i == this.allOrders.length-1) {
-            this.allOrders = Object.assign({}, this.allOrders);
-          }
+      o_ids = []
+
+      // save all ids to list
+      for (let i = 0; i < this.allOrders.length; i++) {
+        o_ids.push(this.allOrders[i].id)
       }
+
+      this.allOrders = [];
+
+      // get name for each id saved above
+      o_ids.forEach(e => {
+        fetch(`/api/order/${e}`)
+        .then(res => res.json())
+        .then(data => {
+          this.allOrders.push(data)
+
+          // if (data.id == o_ids[o_ids.length-1].id) {
+          //   this.allOrders = Object.assign({}, this.allOrders);
+          // }
+        })
+        .catch(err => console.error(err));
+      });
     },
 
     getEquipmentByFacility: function() {
