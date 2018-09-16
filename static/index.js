@@ -171,8 +171,8 @@ var app = new Vue({
       fetch("/api/facility", {
         method: "post",
         body: JSON.stringify({
-          lat: this.aLongitude,
-          lon: this.aLatitude
+          lat: parseFloat(this.aLongitude),
+          lon: parseFloat(this.aLatitude)
         }),
         headers: {
           "Content-Type": "application/json"
@@ -192,9 +192,9 @@ var app = new Vue({
         method: "post",
         body: JSON.stringify({
           name: this.aNewEquipmentType,
-          prob: this.probabilityFailure,
-          hour_min: this.hourMin,
-          hour_max: this.hourMax
+          prob: parseFloat(this.probabilityFailure),
+          hour_min: parseInt(this.hourMin),
+          hour_max: parseInt(this.hourMax)
         }),
         headers: {
           "Content-Type": "application/json"
@@ -202,11 +202,10 @@ var app = new Vue({
       })
         .then(res => res.json())
         .then(data => {
-          this.aNewEquipmentType = "";
-          this.probabilityFailure = "";
-          this.hourMin = "";
-          this.hourMax = "";
-          this.adminFiller();
+          this.aNewEquipmentType="";
+          this.probabilityFailure="";
+          this.hourMax="";
+          this.hourMin="";
         });
     },
 
