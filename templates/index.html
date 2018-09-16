@@ -14,16 +14,40 @@
         <div id="title"><img src="../static/assets/chevron_logo.png" height="70px" width="70px" style="margin-right:25px">Chevron
             Challenge</div>
         <div v-if="user=='home'" class="homepage">
-            <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
+            <v-btn id="homeButton" v-on:click="user='home';fillOrdersWithName();">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
             <div class="homeArea">
-                <span class="formTitle"><u>About Us</u></span>
+                <span class="formTitle" style="font-size: 30px">Orders</span>
+                <table>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Equipment ID</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Assigned to (Worker ID)</th>
+                        <th>Worker Name</th>
+                        <th>Time to completion</th>
+                        <th>Facility ID</th>
+                    </tr>
+                    <template v-for="order in allOrders">
+                        <tr>
+                            <td>{{order.id || "--"}}</td>
+                            <td>{{order.equipment_id || "--"}}</td>
+                            <td>{{order.priority || "--"}}</td>
+                            <td>{{order.status || "--"}}</td>
+                            <td>{{order.worker_id || "--"}}</td>
+                            <td>{{order.worker_name || "--"}}</td>
+                            <td>{{order.time_to_completion || "--"}}</td>
+                            <td>{{order.facility_id || "--"}}</td>
+                        </tr>
+                    </template>
+                </table>
             </div>
         </div>
         <!-- Admin -->
         <div v-else-if="user=='admin'">
-            <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
+            <v-btn id="homeButton" v-on:click="user='home';fillOrdersWithName();">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'">Client</v-btn>
             <div class="adminArea">
@@ -64,7 +88,7 @@
                     </v-btn><br><br>
                 </div>
 
-                <span class="formTitle">Add a New Worker</span><br>
+                <span class="formTitle">Add a New Worker</span><br><br>
                 <span class="formHeading">Worker's Name:</span>
                 <input type="text" style="width:200px" v-model="aWorkerName" placeholder="FullName"><span style="color:black"></span><br>
 
@@ -73,7 +97,7 @@
                 <v-btn id="aSubmitButton" v-on:click="addNewWorker">Submit<v-icon dark right>check_circle</v-icon>
                 </v-btn><br><br>
 
-                <span class="formTitle">Add certificates</span>
+                <span class="formTitle">Add certificates</span><br>
                 <div class="formHeading">Worker:
                     <select class="dropDown" v-model="aCertificateWorkerName">
                         <option v-for="worker in workers" :value="worker.id">{{worker.name}}</option>
@@ -90,7 +114,7 @@
 
         <!-- Client -->
         <div v-else-if="user=='client'">
-            <v-btn id="homeButton" v-on:click="user='home'">Home</v-btn>
+            <v-btn id="homeButton" v-on:click="user='home';fillOrdersWithName();">Home</v-btn>
             <v-btn id="adminButton" v-on:click="user='admin'">Admin</v-btn>
             <v-btn id="clientButton" v-on:click="user='client'" v-on:click="adminFiller">Client</v-btn>
             <div class="clientArea">
@@ -104,7 +128,8 @@
                 </div><br>
                 <span class="formHeading">Equipment: </span>
                 <select class="dropDown" v-model="cSelectedEquipment">
-                    <option v-for="equipment in allEquipments.equipments"  :value="equipment.facility_id">{{`${equipment.name} ${equipment.id}`}}</option>
+                    <option v-for="equipment in allEquipments.equipments" :value="equipment.id">{{`${equipment.name}
+                        ${equipment.id}`}}</option>
                 </select><br>
 
                 <span class="formHeading">Priority level: </span>
@@ -120,8 +145,8 @@
                     <input type="number" v-model="cCompleteTime" style="width:50px" min="1">&nbsphour(s)</span>
                 <br><br>
 
-                <v-btn id="aSubmitButton" v-on:click="submitOrderForm" style="width:150px;font-size:14px">Submit Order<v-icon
-                        dark right>check_circle</v-icon>
+                <v-btn id="aSubmitButton" v-on:click="submitOrderForm();getAllOrders();fillOrdersWithName();" style="width:150px;font-size:14px">Submit
+                    Order<v-icon dark right>check_circle</v-icon>
                 </v-btn><br>
 
                 <div class="formTitle" style="margin-top:50px">View Worker's Profile</div>
@@ -137,10 +162,8 @@
                             <li>ID: {{allProfile.id}}</li>
                             <li>Shift: {{allProfile.shift}}</li>
                             <li>Certificates: <span v-for="cert in allProfile.certifications">{{cert.name}}, </span></li>
-                            
+
                         </ul><br>
-                        
-                    </div>
                 </div>
             </div>
         </div>
@@ -148,6 +171,5 @@
 </body>
 <script src="../static/index.js"></script>
 <link rel="stylesheet" href="../static/styles.css">
-<!-- <script src="{{url_for('static', filename='index.js')}}"></script> -->
 
 </html>

@@ -152,7 +152,7 @@ input[type="checkbox"] {
 
 
 #aSubmitButton {
-  height: 35px;
+  height: 27px;
   width: 100px;
   font-family: Lucida Sans Typewriter;
   font-size: 10px;
@@ -175,3 +175,19 @@ input[type="checkbox"] {
     color: black;
     margin-left: 400px;
 }
+
+table,th,td{
+  border:1px solid black;
+  font-size: 18px;
+  text-align: left;
+}
+
+table{
+  border-collapse: collapse;
+  margin-top: 20px;
+  width: 80%;
+}
+
+/* th,td{
+  padding: 15px;
+} */
