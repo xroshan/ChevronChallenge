@@ -146,7 +146,9 @@ def worker(worker_id):
     res = get_dict(worker)
 
     # add relations
-    res['certifications'] = get_dict_array(worker.certifications)
+    res['certifications'] = []
+    for cert in worker.certifications:
+        res['certifications'].append({"name": cert.equipment_type.name, "id": cert.id})
     res['orders'] = get_dict_array(worker.orders)
 
     return jsonify(res)
