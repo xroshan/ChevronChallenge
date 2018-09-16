@@ -19,7 +19,8 @@ def get_all_orders():
 def get_all_pending_orders():
     orders = Order.query.filter(
         or_(Order.status == "pending", Order.status == "assigned")).order_by(Order.priority).all()
-    return orders
+    # get the first 8 pending orders so that algorithm can run fast
+    return orders[:8]
 
 
 # get all the work orders "in_progress" ones or "assigned" ones
