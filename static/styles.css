@@ -67,13 +67,9 @@
 }
 
 .homeArea {
-  height: 100%;
+  height: auto;
   width: 98.5%;
   background-color: white;
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 5px;
-  border-color: rgb(20, 52, 88);
   margin-top: 1px;
   margin-left: 10px;
   padding: 10px;
@@ -152,7 +148,7 @@ input[type="checkbox"] {
 
 
 #aSubmitButton {
-  height: 35px;
+  height: 27px;
   width: 100px;
   font-family: Lucida Sans Typewriter;
   font-size: 10px;
@@ -174,15 +170,4 @@ input[type="checkbox"] {
     font-weight: bold;
     color: black;
     margin-left: 400px;
-}
-
-table,th,td{
-  border:1px solid black;
-  text-align: center;
-}
-
-table{
-  border-collapse: collapse;
-  margin-top: 20px;
-  width: 80%;
 }
