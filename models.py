@@ -91,12 +91,11 @@ class Order(db.Model):
     equipment_id = db.Column(db.Integer, db.ForeignKey("equipment.id"), nullable=False)
     worker_id = db.Column(db.Integer, db.ForeignKey("worker.id"))
 
-    def __init__(self, priority, time_to_completion, facility_id, equipment_id, worker_id):
+    def __init__(self, priority, time_to_completion, facility_id, equipment_id):
         self.priority = priority
         self.time_to_completion = time_to_completion
         self.facility_id = facility_id
         self.equipment_id = equipment_id
-        self.worker_id = worker_id
 
     def __repr__(self):
         return f'<Work Order {self.id}, {self.status}>'
