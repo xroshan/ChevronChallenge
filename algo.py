@@ -2,6 +2,7 @@ from models import *
 from anytree import AnyNode, RenderTree, LevelOrderGroupIter
 from datetime import datetime, timedelta
 from sqlalchemy import or_
+from math import sin, cos, sqrt, atan2, radians
 
 # Assumption
 # Workers   Morning Shift -- 8:00a - 2:00p      Evening Shift -- 2:00p - 10:00p
@@ -10,21 +11,23 @@ from sqlalchemy import or_
 
 # get all the work orders except the "completed" ones
 def get_all_orders():
-    orders = Order.query.filter(Order.status != "completed").order_by(Order.priority).all()
-    return orders 
+    orders = Order.query.filter(
+        Order.status != "completed").order_by(Order.priority).all()
+    return orders
 
 # get all the work orders "completed" or "in_progress" ones
 def get_all_pending_orders():
     orders = Order.query.filter(
         or_(Order.status == "pending", Order.status == "assigned")).order_by(Order.priority).all()
-    return orders 
+    # get the first 8 pending orders so that algorithm can run fast
+    return orders[:8]
 
 
 # get all the work orders "in_progress" ones or "assigned" ones
 def get_all_assigned_orders():
     orders = Order.query.filter(
         or_(Order.status == "in_progress",  Order.status == "assigned")).order_by(Order.priority).all()
-    return orders 
+    return orders
 
 
 # get all the workers who can fix the "equipment_id"
@@ -43,16 +46,16 @@ def get_all_workers(equipment_id):
     return workers
 
 
-# add two times together in such a way that the time is included during the shift hours the worker
-def add_time(a, b, shift_time):
-    if (a + b) <= shift_time:
-        # if the sum of time is included during the shift hour return it
-        return a+b
-    else:
-        # else include the time in next shift hours or else, include it in next shift hour
-        shift_time = shift_time + timedelta(hours=24)
-        b = b + timedelta(hours=16)
-        return add_time(a, b, shift_time)
+# # add two times together in such a way that the time is included during the shift hours the worker
+# def add_time(a, b, shift_time):
+#     if (a + b) <= shift_time:
+#         # if the sum of time is included during the shift hour return it
+#         return a+b
+#     else:
+#         # else include the time in next shift hours or else, include it in next shift hour
+#         shift_time = shift_time + timedelta(hours=24)
+#         b = b + timedelta(hours=16)
+#         return add_time(a, b, shift_time)
 
 
 # get estimated start time and estimated end time for a work for that worker
@@ -77,10 +80,55 @@ def add_time(a, b, shift_time):
 #     # return the test_time till now
 #     return testing_time
 
+
+# get the end time of work by the worker
 def get_total_time(TTC, id, res):
     worker = Worker.query.get(id)
-    end_time = res[worker.id] + timedelta(hours = TTC)
+    end_time = res[worker.id] + timedelta(hours=TTC)
     return end_time
+
+# get the facility in which the worker is or if Not 0 as home
+def get_facility(worker):
+    orders = worker.orders
+    if len(orders) == 0:
+        return 0
+    else:
+        latest = orders[0]
+        # get the last location of worker
+        for od in orders:
+            if od.est_end_time > latest.est_end_time:
+                latest = od
+        return latest.facility_id
+
+
+# get distance between 2 facilities in km.. using longitude and lattitude
+def get_distance(a, b):
+    dis1 = Facility.query.get(a)
+    dis2 = Facility.query.get(b)
+    lat1 = radians(dis1.lat)
+    lon1 = radians(dis1.lon)
+    lat2 = radians(dis2.lat)
+    lon2 = radians(dis2.lon)
+
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    # distance calculation adapted from google
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    return 6373*c
+
+
+# get travel time based on distance.. if worker is in same facility then 0.. if in home then 1 hour... else speed is 40 km/hour
+def get_travel_time(dis1, dis2):
+    if dis2 == 0:
+        return 1
+    elif dis1 == dis2:
+        return 0
+    else:
+        speed = 40
+        time = get_distance(dis1, dis2)/speed
+        return time
 
 
 # recover the best solution given the best leaf of a tree
@@ -89,7 +137,7 @@ def recover_best_path(best_node):
     # go back to the root parent tracing from the best leaf and store work_id as key and return id, start_time and end_time in it
     while best_node.depth != 0:
         res[best_node.work_id] = [best_node.id,
-                                        best_node.st_time, best_node.end_time];
+                                  best_node.st_time, best_node.end_time]
         best_node = best_node.parent
     return res
 
@@ -97,7 +145,8 @@ def recover_best_path(best_node):
 # brute force all the scenarios with the help of tree. The path of the best value of the leaf through the tree gives the best scenario
 def get_best_scenario(orders):
     # scenario starts with current datetime
-    scenario = AnyNode(testing_infos=dict(), value=datetime.now())
+    scenario = AnyNode(testing_infos=dict(),
+                       testing_infos2=dict(), value=datetime.now())
     depth = 0
     for order in orders:
         partrees = []
@@ -109,34 +158,39 @@ def get_best_scenario(orders):
         for partree in partrees:
             children = []
             res = dict()
+            res2 = dict()
             # store all worker_time completion testing as key and value
             if not partree.is_root:
                 res = partree.parent.testing_infos
+                res2 = partree.parent.testing_infos2
 
-            # if "in_progress", get the latest time comparing the current latest time and time required by worker to complete
-            if order.status == "in_progress":
-                worker = Worker.query.get(order.worker_id)
-                # set worker testing time to time until free as it has already been assigned "in_progress"
-                res[worker.id] = worker.time_until_free
-                # node stores all the required variables such as previous work_info, start_time, end_time, worker info and values
-                a = AnyNode(testing_infos=res, work_id=order.id, st_time=order.est_start_time, end_time=order.est_end_time, id=order.id, value=max(order.est_end_time
-                    , partree.value))
+            # brute force with all workers and get the latest time of completion
+            workers = get_all_workers(order.equipment_id)
+            for worker in workers:
+                # if worker has not been assigned earlier work, set his/her leisure time
+                if not worker.id in res:
+                    res[worker.id] = worker.time_until_free
+                    
+                # last place the worker was in
+                if not worker.id in res2:
+                    res2[worker.id] = get_facility(worker)
+
+                # get the travel time for worker to go to facility in which work is done
+                travel_time = get_travel_time(
+                    order.facility_id, res2[worker.id])
+
+                res2[worker.id] = order.facility_id
+
+                # have value for the start_time of work
+                start_time = res[worker.id] + timedelta(hours=travel_time)
+
+                # total time for worker
+                res[worker.id] = get_total_time(
+                    order.time_to_completion, worker.id, res) + timedelta(hours=travel_time)
+
+                a = AnyNode(testing_infos=res, testing_infos2=res2, work_id=order.id, id=worker.id, st_time=start_time,
+                            end_time=res[worker.id], value=max(res[worker.id], partree.value))
                 children.append(a)
-
-            # else, brute force with all workers and get the latest time of completion
-            else:
-                workers = get_all_workers(order.equipment_id)
-                for worker in workers:
-                    # if worker has not been assigned earlier work, set his/her leisure time
-                    if not worker.id in res:
-                        res[worker.id] = worker.time_until_free
-                    # have value for the start_time of work as well as the end time of work
-                    start_time = res[worker.id]
-                    res[worker.id] = get_total_time(
-                        order.time_to_completion, worker.id, res)
-                    a = AnyNode(testing_infos=res, work_id=order.id, id=worker.id, st_time=start_time,
-                                end_time=res[worker.id], value=max(res[worker.id], partree.value))
-                    children.append(a)
 
             # add the leaves to the current parent node
             partree.children = children
@@ -167,7 +221,7 @@ def assign_task():
         order.est_start_time = best[order.id][1]
         order.est_end_time = best[order.id][2]
         order.status = 'assigned'
-        
+
     # update database
     db.session.commit()
 
@@ -176,7 +230,6 @@ def assign_task():
 def check_time():
     orders = get_all_assigned_orders()
     for order in orders:
-        print(order.est_start_time)
         # if estimated end time is greater than current time, then the work is completed
         if order.est_end_time < datetime.now():
             order.status = 'completed'
@@ -184,7 +237,7 @@ def check_time():
         # if estimated start time is greater than current time, then start the work i.e. "in_progress".. worker time_until_free is updated
         if order.est_start_time < datetime.now():
             order.status = 'in_progress'
-            worker = Worker.query.get(order.id)
+            worker = Worker.query.get(order.worker_id)
             worker.time_until_free = order.est_end_time
     # update database
     db.session.commit()
