@@ -70,7 +70,7 @@
                     <select class="dropDown" v-model="aSelectedFacility">
                         <option v-for="facility in facilities" :value="facility.id">{{`Facility ${facility.id}`}}</option>
                     </select>
-                    <v-btn id="aSubmitButton" v-on:click="addNewEquipment">Submit<v-icon dark right>check_circle</v-icon>
+                    <v-btn id="aSubmitButton" v-on:click="addNewEquipment" style="margin-left: 40px;">Submit<v-icon dark right>check_circle</v-icon>
                     </v-btn><br><br>
                 </div>
 
@@ -85,7 +85,7 @@
                     <input type="number" style="width:50px" v-model="hourMin" min="0" placeholder="0"> -
                     <input type="number" style="width:50px" v-model="hourMax" min="0" placeholder="0">
 
-                    <v-btn id="aSubmitButton" v-on:click="addNewEquipmentType">Submit<v-icon dark right>check_circle</v-icon>
+                    <v-btn id="aSubmitButton" v-on:click="addNewEquipmentType" style="margin-left: 50px;">Submit<v-icon dark right>check_circle</v-icon>
                     </v-btn><br><br>
                 </div>
 
@@ -95,7 +95,7 @@
 
                 <span class="formHeading">Worker's Shift:</span>
                 <input type="text" style="width:200px" v-model="aWorkerShift" placeholder="Shift">
-                <v-btn id="aSubmitButton" v-on:click="addNewWorker">Submit<v-icon dark right>check_circle</v-icon>
+                <v-btn id="aSubmitButton" v-on:click="addNewWorker" style="margin-left: 125px;">Submit<v-icon dark right>check_circle</v-icon>
                 </v-btn><br><br>
 
                 <span class="formTitle">Add certificates</span><br>
@@ -108,7 +108,7 @@
                 <select class="dropDown" v-model="aCertificateWorker">
                     <option v-for="type in types" :value="type.id">{{type.name}}</option>
                 </select>
-                <v-btn id="aSubmitButton" v-on:click="addNewCertificate">Submit<v-icon dark right>check_circle</v-icon>
+                <v-btn id="aSubmitButton" v-on:click="addNewCertificate" style="margin-left: 45px;">Submit<v-icon dark right>check_circle</v-icon>
                 </v-btn>
             </div>
         </div>

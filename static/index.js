@@ -110,7 +110,7 @@ var app = new Vue({
     },
 
     fillOrdersWithName: function() {
-      for (let i = 0; i < this.allOrders.length; i++) {
+      for (let i = 1; i < this.allOrders.length; i++) {
         fetch(`/api/order/${i}`)
           .then(res => res.json())
           .then(data => {
