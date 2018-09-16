@@ -107,16 +107,16 @@ def equipment_type_root():
             return jsonify({"success": False, "message": "Invalid body fields."}), 400
 
         if len(data['name'].strip()) < 1 or len(data['name']) > 25:
-            return jsonify({"success": False, "message": "Name length out of range."}), 404
+            return jsonify({"success": False, "message": "Name length out of range."}), 400
 
         if data['prob'] < 0 or data['prob'] > 1:
-            return jsonify({"success": False, "message": "Probability out of range."}), 404
+            return jsonify({"success": False, "message": "Probability out of range."}), 400
 
         if data['hour_min'] < 1:
-            return jsonify({"success": False, "message": "Minimum hour out of range."}), 404
+            return jsonify({"success": False, "message": "Minimum hour out of range."}), 400
 
         if data['hour_max'] < 1 or data['hour_max'] < data['hour_min']:
-            return jsonify({"success": False, "message": "Maximum hour out of range."}), 404
+            return jsonify({"success": False, "message": "Maximum hour out of range."}), 400
 
         # add to db
         e_type = EquipmentType(data['name'], data['prob'], data['hour_min'], data['hour_max'])
@@ -152,10 +152,10 @@ def facility_root():
             return jsonify({"success": False, "message": "Invalid body fields."}), 400
 
         if data['lat'] < -90.0 or data['lat'] > 90.0:
-            return jsonify({"success": False, "message": "Latitude out of range."}), 404
+            return jsonify({"success": False, "message": "Latitude out of range."}), 400
 
         if data['lon'] < -180.0 or data['lon'] > 180.0:
-            return jsonify({"success": False, "message": "Longitude out of range."}), 404
+            return jsonify({"success": False, "message": "Longitude out of range."}), 400
 
         # add to db
         facility = Facility(data['lat'], data['lon'])
@@ -207,10 +207,10 @@ def order_root():
             return jsonify({"success": False, "message": "Invalid body fields."}), 400
 
         if data['priority'] < 1 or data['priority'] > 5:
-            return jsonify({"success": False, "message": "Priority out of range."}), 404
+            return jsonify({"success": False, "message": "Priority out of range."}), 400
 
         if data['time_to_completion'] < 1:
-            return jsonify({"success": False, "message": "Time to completion out of range."}), 404
+            return jsonify({"success": False, "message": "Time to completion out of range."}), 400
 
         if not Equipment.query.get(data['equipment_id']):
             return jsonify({"success": False, "message": "Equipment key not found."}), 404
@@ -249,10 +249,10 @@ def worker_root():
             return jsonify({"success": False, "message": "Invalid body fields."}), 400
 
         if len(data['name'].strip()) < 1 or len(data['name']) > 100:
-            return jsonify({"success": False, "message": "Name length out of range."}), 404
+            return jsonify({"success": False, "message": "Name length out of range."}), 400
 
         if len(data['shift'].strip()) < 1 or len(data['shift']) > 15:
-            return jsonify({"success": False, "message": "Shift length out of range."}), 404
+            return jsonify({"success": False, "message": "Shift length out of range."}), 400
 
         # add to db
         worker = Worker(data['name'], data['shift'])
